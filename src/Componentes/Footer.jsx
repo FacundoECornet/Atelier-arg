@@ -1,7 +1,4 @@
-import react from 'react';  
-import { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";   
-import { db } from "../Firebase"; // Verifica que la ruta sea correcta
+import React from 'react';   
 import Tooltip from './Social';
 
 
