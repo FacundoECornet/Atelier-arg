@@ -77,6 +77,7 @@ const Body = () => {
 
   return (
     <>
+    
       <div className="relative w-auto h-[500px] sm:h-[600px] lg:h-[800px]">
         <img
           src={fondo}
@@ -85,9 +86,10 @@ const Body = () => {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white ">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Texto centrado sobre la imagen
+          Una inmobiliaria diferente
           </h1>
-          <p className="text-lg sm:text-xl mb-6">Una descripción breve del contenido.</p>
+          <p className="text-lg sm:text-xl mb-6 w-full max-w-md"
+>En Atelier Homes disponemos de una metodología de venta basada en la fusión de arquitectura, diseño de interiores y marketing inmobiliario digital, importada de Europa.</p>
           <div className="flex gap-4 justify-center">
             <button
               onClick={handleVenderClick}

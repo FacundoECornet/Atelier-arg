@@ -8,6 +8,7 @@ import Nosotros from './Componentes/Nosotros.jsx'
 import Noticias from './Componentes/Noticias.jsx'
 import Footer from './Componentes/Footer.jsx';
 import Formulario from './Componentes/Contacto.jsx'
+import Pasos from './Componentes/Pasos.jsx'
 
 
 
@@ -22,6 +23,7 @@ function App() {
     <Nosotros/>
     <Noticias/>
     <Formulario/>
+    <Pasos/>
     <Footer/>
     </>
   )

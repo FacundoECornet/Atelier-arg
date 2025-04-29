@@ -2,10 +2,10 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Inicio", href: "#inicio", current: true },
+  { name: "Propiedades", href: "#propiedades", current: false },
+  { name: "Noticias", href: "#noticias", current: false },
+  { name: "Saber mas", href: "#saber-mas", current: false },
 ];
 
 function classNames(...classes) {
@@ -15,7 +15,7 @@ function classNames(...classes) {
 export default function Navbar() {
   return (
     <Disclosure as="nav" className="absolute w-full top-0 left-0 z-50 bg-transparent">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" id="inicio">
         <div className="flex h-16 items-center justify-between">
           
           {/* Logo a la izquierda */}
@@ -48,7 +48,7 @@ export default function Navbar() {
 
           {/* Botón de Contacto fijo a la derecha */}
           <div className="hidden sm:block">
-            <a href="#" className="bg-white text-black px-4 py-2 rounded-md border border-black hover:bg-black hover:text-white transition">
+            <a href="#contacto" className="bg-white text-black px-4 py-2 rounded-md border border-black hover:bg-black hover:text-white transition">
               Contacto
             </a>
           </div>
@@ -63,22 +63,25 @@ export default function Navbar() {
       </div>
 
       {/* Menú móvil */}
-      <DisclosurePanel className="sm:hidden">
+      <DisclosurePanel className="sm:hidden bg-white">
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navigation.map((item) => (
             <DisclosureButton
               key={item.name}
               as="a"
               href={item.href}
-              className="block text-gray-300 hover:bg-black-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-gray-500 hover:bg-black-700 hover:text-black px-3 py-2 rounded-md text-base font-medium"
             >
               {item.name}
             </DisclosureButton>
           ))}
           {/* Botón de contacto en menú móvil */}
-          <DisclosureButton as="a" href="#" className="block text-white bg-black px-3 py-2 rounded-md text-base font-medium">
-            Contacto
-          </DisclosureButton>
+          <a href="#contacto">
+  <DisclosureButton className="block text-white bg-black px-3 py-2 rounded-md text-base font-medium">
+    Contacto
+  </DisclosureButton>
+</a>
+
         </div>
 
 
