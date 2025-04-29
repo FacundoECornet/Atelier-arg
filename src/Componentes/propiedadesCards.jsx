@@ -26,7 +26,8 @@ const PropertyList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4" id="propiedades">
+  
       <h2 className="text-center text-2xl font-bold mb-4">Propiedades en Venta</h2>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">

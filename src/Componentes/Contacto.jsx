@@ -60,7 +60,11 @@ const Formulario = () => {
 
   return (
     <>
-    <div className="flex flex-col md:flex-row items-stretch max-w-6xl mx-auto bg-white  rounded overflow-hidden m-5">
+    <div
+  id="contacto"
+  className="scroll-mt-24 flex flex-col md:flex-row items-stretch max-w-6xl mx-auto bg-white rounded overflow-hidden m-5"
+>
+
   {/* Imagen a la izquierda */}
   <div className="hidden md:block md:w-1/2 h-full">
     <img

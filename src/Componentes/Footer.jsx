@@ -12,17 +12,17 @@ return(
     {/* Contacto */}
     <div>
       <h3 className="text-xl font-semibold mb-4">Contacto</h3>
-      <p className="mb-2">Teléfono: (381) 123-4567</p>
-      <p className="mb-2">Email: contacto@empresa.com</p>
+      <p className="mb-2">Teléfono: (381) 415 9547</p>
+      <p className="mb-2">Email: marlene@atelierhomes.es</p>
       <p className="mb-2">Horario: Lun a Vie de 9 a 18 hs</p>
     </div>
 
     {/* Ubicación */}
     <div>
       <h3 className="text-xl font-semibold mb-4">Ubicación</h3>
-      <p className="mb-2">Av. Siempre Viva 742</p>
-      <p className="mb-2">San Miguel de Tucumán, Argentina</p>
-      <p className="mb-2">CP 4000</p>
+      <p className="mb-2">Alter Point | Av. Perón 2300  | Oficina 10</p>
+      <p className="mb-2">Yerba Buena, Tucumán, Argentina</p>
+      <p className="mb-2">CP 4107</p>
     </div>
 
     {/* Redes Sociales */}
@@ -39,7 +39,7 @@ return(
 
   {/* Línea inferior */}
   <div className="mt-10 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-    © 2025 Tu Empresa. Todos los derechos reservados.
+  © 2035 by Atelier Homes
   </div>
 </footer>
 
