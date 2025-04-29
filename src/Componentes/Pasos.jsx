@@ -135,10 +135,11 @@ export default function Pasos() {
 </div>
 
 
-                <div className="md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-                  <h2 className="text-2xl font-bold mb-4">{paso.title}</h2>
-                  <p className="text-gray-700">{paso.content}</p>
-                </div>
+<div className="md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+  <h2 className="text-2xl sm:text-xl md:text-2xl font-bold mb-4 sm:mb-2">{paso.title}</h2>
+  <p className="text-gray-700 text-sm sm:text-base md:text-lg mb-4 sm:mb-3">{paso.content}</p>
+</div>
+
               </div>
             </div>
           ))}
