@@ -123,14 +123,15 @@ export default function Pasos() {
             >
               <div className="flex flex-col md:flex-row h-full">
               <div className="md:w-1/2 h-full bg-gray-100">
-  <img 
-    src={paso.imageSrc} 
-    alt={paso.title}
-    className="w-full h-full object-cover object-center"
-    onError={(e) => {
-      e.target.src = "/images/default-property.jpg";
-    }}
-  />
+              <img 
+  src={paso.imageSrc} 
+  alt={paso.title}
+  className="w-full h-full object-cover object-center max-sm:h-auto max-sm:max-h-64"
+  onError={(e) => {
+    e.target.src = "/images/default-property.jpg";
+  }}
+/>
+
 </div>
 
 
