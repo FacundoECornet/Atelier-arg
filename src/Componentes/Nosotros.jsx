@@ -2,7 +2,7 @@ import react from 'react';
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";   
 import { db } from "../Firebase"; // Verifica que la ruta sea correcta
-import img from '../assets/franymarlene.jpg';
+import img from '../Imagenes/franymarlene.webp';
 
 
 
