@@ -27,7 +27,9 @@ export default function Nosotros() {
         Somos una compañía europea líder en el sector inmobiliario con presencia en Argentina, España y Miami. Nuestro equipo internacional, compuesto por abogados, escribanos, corredores inmobiliarios, arquitectos y diseñadores de interiores, se dedica a ofrecer un servicio integral.
       </p>
       <button className='mt-5 px-6 py-2 bg-black text-white rounded-md hover:bg-white hover:text-black border-2 transition'>
+        <a href="#contacto">
         HABLEMOS!
+        </a>
       </button>
     </div>
   </div>

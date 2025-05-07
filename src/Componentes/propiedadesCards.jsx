@@ -5,6 +5,7 @@ import { db } from "../Firebase"; // Verifica que la ruta sea correcta
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3); // Estado para manejar cuántas propiedades se muestran
+  const initialCount = 3; // Definimos cuántas propiedades se muestran inicialmente
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -25,9 +26,20 @@ const PropertyList = () => {
     fetchProperties();
   }, []);
 
+  // Función para mostrar todas las propiedades
+  const showAllProperties = () => {
+    setVisibleCount(properties.length);
+  };
+
+  // Función para volver al estado inicial (3 propiedades)
+  const showLessProperties = () => {
+    setVisibleCount(initialCount);
+    // Opcional: scroll hacia arriba de la sección de propiedades
+    document.getElementById("propiedades").scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="container mx-auto p-4" id="propiedades">
-  
       <h2 className="text-center text-2xl font-bold mb-4">Propiedades en Venta</h2>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
@@ -36,17 +48,26 @@ const PropertyList = () => {
         ))}
       </div>
 
-      {/* Botón para ver más propiedades */}
-      {visibleCount < properties.length && (
-        <div className="mt-4 text-center">
+      {/* Botones para controlar la visualización */}
+      <div className="mt-4 text-center">
+        {visibleCount < properties.length ? (
           <button
-            onClick={() => setVisibleCount(properties.length)}
+            onClick={showAllProperties}
             className="bg-white text-black border-2 border-black py-2 px-4 rounded-lg transition duration-300 hover:bg-black hover:text-white"
           >
             Ver Más
           </button>
-        </div>
-      )}
+        ) : (
+          properties.length > initialCount && (
+            <button
+              onClick={showLessProperties}
+              className="bg-white text-black border-2 border-black py-2 px-4 rounded-lg transition duration-300 hover:bg-black hover:text-white"
+            >
+              Ver Menos
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };

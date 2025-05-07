@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
+import { Map, Marker } from "pigeon-maps"
+
 
 const Formulario = () => {
   const [formData, setFormData] = useState({
@@ -60,19 +62,25 @@ const Formulario = () => {
 
   return (
     <>
+    <h1 className="text-3xl font-bold mb-6 text-center">Contactanos</h1>
     <div
   id="contacto"
   className="scroll-mt-24 flex flex-col md:flex-row items-stretch max-w-6xl mx-auto bg-white rounded overflow-hidden m-5"
 >
 
-  {/* Imagen a la izquierda */}
-  <div className="hidden md:block md:w-1/2 h-full">
-    <img
-      src="https://static.wixstatic.com/media/00602b_c4f025d72578441b98a523b51f59656f~mv2.jpg/v1/crop/x_0,y_0,w_1053,h_787/fill/w_960,h_718,fp_0.50_0.50,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/oficina-Zaragoza-web-1.jpg" // Reemplazá esta URL por la tuya
-      alt="Imagen ilustrativa"
-      className="w-full h-full object-cover"
-    />
-  </div>
+<div className="w-full max-w-md mx-auto aspect-square rounded-lg shadow-md overflow-hidden">
+      <Map
+        defaultCenter={[-26.800137, -65.302171]}
+        defaultZoom={16}
+        height={400} // se ignora si usás aspect-square, pero es requerido por la lib
+      >
+        <Marker
+          anchor={[-26.800137, -65.302171]}
+          color="red" // <- esto pone el marcador rojo
+          width={40}
+        />
+      </Map>
+    </div>
 
   {/* Formulario */}
   <form
