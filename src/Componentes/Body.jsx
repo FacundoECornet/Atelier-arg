@@ -51,7 +51,7 @@ const Body = () => {
 
     // Enviar email con EmailJS sin publicKey
     emailjs
-      .send("service_inq85pp", "template_3kzh9je", templateParams, "bqG-kgsik_UVR-XMq")
+      .send("service_0idwo4b", "template_ixkz4ph", templateParams, "OmSNlnNWonV9JOdiV")
       .then(
         (response) => {
           console.log("Correo enviado con éxito:", response);

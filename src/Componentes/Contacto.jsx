@@ -32,7 +32,7 @@ const Formulario = () => {
     };
 
     emailjs
-      .send("service_inq85pp", "template_kmhkeok", templateParams, "bqG-kgsik_UVR-XMq")
+      .send("service_0idwo4b", "template_npmcqmq", templateParams, "OmSNlnNWonV9JOdiV")
       .then(
         () => {
           Swal.fire({
