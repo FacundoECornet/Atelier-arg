@@ -1,12 +1,12 @@
 import { useState } from "react";
 import consulta from "../Imagenes/Atelier-26.webp";
-import valor from "../Imagenes/Atelier-27.webp";
+import valor from "../Imagenes/valoracion.webp";
 import casa from "../Imagenes/Mercedes Costal-23.webp";
-import post from "../Imagenes/Atelier-31.webp";
+import post from "../Imagenes/post-venta.webp";
 import contrato from "../Imagenes/Atelier-llaves.webp";
 import mark from "../Imagenes/mark.webp";
-import visita from "../Imagenes/Atelier-23.webp";
-import informe from "../Imagenes/Atelier-33.webp";
+import visita from "../Imagenes/visita (1).webp";
+import informe from "../Imagenes/Informe.webp";
 
 
 
