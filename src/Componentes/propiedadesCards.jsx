@@ -1,41 +1,44 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../Firebase"; 
+import { db } from "../Firebase";
 import { useNavigate } from "react-router-dom";
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
-  const initialCount = 3;
   const navigate = useNavigate();
+  const initialCount = 3;
+  console.log("📦 Renderizando PropertyList");
 
   useEffect(() => {
+    console.log("🚀 Ejecutando useEffect: Fetch de propiedades");
+  
     const fetchProperties = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "propiedades"));
-        const propertiesData = querySnapshot.docs.map((doc) => ({
+        const data = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        setProperties(propertiesData);
+        setProperties(data);
       } catch (error) {
         console.error("Error cargando propiedades:", error);
       }
     };
-
+  
     fetchProperties();
   }, []);
+  
 
-  const showAllProperties = () => {
-    setVisibleCount(properties.length);
-  };
-
-  const showLessProperties = () => {
-    setVisibleCount(initialCount);
-    const container = document.getElementById("propiedades");
-    if (container) {
-      container.scrollIntoView({ behavior: "smooth" });
+  const handleToggleProperties = () => {
+    if (visibleCount < properties.length) {
+      setVisibleCount(properties.length);
+    } else {
+      setVisibleCount(initialCount);
+      const container = document.getElementById("propiedades");
+      if (container) {
+        container.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -54,60 +57,51 @@ const PropertyList = () => {
         ))}
       </div>
 
-      <div className="mt-8 flex justify-center">
-        {visibleCount < properties.length ? (
+      {properties.length > initialCount && (
+        <div className="mt-8 flex justify-center">
           <button
-            onClick={showAllProperties}
-            className="bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-semibold transition duration-300 hover:bg-black hover:text-white cursor-pointer"
+            onClick={handleToggleProperties}
+            className="bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-semibold transition duration-300 hover:bg-black hover:text-white"
           >
-            Ver Más
+            {visibleCount < properties.length ? "Ver Más" : "Ver Menos"}
           </button>
-        ) : (
-          properties.length > initialCount && (
-            <button
-              onClick={showLessProperties}
-              className="bg-white text-black border-2 border-black py-3 px-6 rounded-lg font-semibold transition duration-300 hover:bg-black hover:text-white cursor-pointer"
-            >
-              Ver Menos
-            </button>
-          )
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
 
-function PropertyCard({ property, onClick }) {
-  return (
-    <div
-      onClick={onClick}
-      className="bg-white border-2 border-black rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] flex flex-col h-full"
-    >
-      <img
-        src={property.img}
-        alt={property.Nombre || "Imagen propiedad"}
-        className="w-full h-52 sm:h-56 md:h-48 object-cover"
-      />
-      <div className="p-4 flex flex-col flex-grow">
-        <span className="text-sm text-gray-600">{property.ubicacion || "Sin ubicación"}</span>
+const PropertyCard = ({ property, onClick }) => (
+  <div
+    onClick={onClick}
+    className="bg-white border-2 border-black rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-[1.03] flex flex-col h-full"
+  >
+    <img
+      src={property.img}
+      alt={property.Nombre || "Imagen propiedad"}
+      className="w-full h-52 sm:h-56 md:h-48 object-cover"
+    />
+    <div className="p-4 flex flex-col flex-grow">
+      <span className="text-sm text-gray-600">{property.ubicacion || "Sin ubicación"}</span>
 
-        <div className="flex justify-between items-center mt-1 mb-4">
-          <h3 className="text-xl font-semibold">{property.Nombre || "Sin título"}</h3>
-          <span className="text-sm text-gray-600">{property.caracteristicas || "Sin características"}</span>
-        </div>
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-          className="mt-auto w-full bg-white text-black border-2 border-black py-3 rounded-lg font-semibold transition duration-300 hover:bg-black hover:text-white"
-        >
-          Ver Propiedad
-        </button>
+      <div className="flex justify-between items-center mt-1 mb-4">
+        <h3 className="text-xl font-semibold">{property.Nombre || "Sin título"}</h3>
+        <span className="text-sm text-gray-600">
+          {property.caracteristicas || "Sin características"}
+        </span>
       </div>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+        className="mt-auto w-full bg-white text-black border-2 border-black py-3 rounded-lg font-semibold transition duration-300 hover:bg-black hover:text-white"
+      >
+        Ver Propiedad
+      </button>
     </div>
-  );
-}
+  </div>
+);
 
 export default PropertyList;

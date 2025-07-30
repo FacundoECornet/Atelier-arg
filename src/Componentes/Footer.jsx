@@ -13,7 +13,7 @@ return(
     <div>
       <h3 className="text-xl font-semibold mb-4">Contacto</h3>
       <p className="mb-2">Teléfono: (381) 415 9547</p>
-      <p className="mb-2">Email: marlene@atelierhomes.es</p>
+      <p className="mb-2">Email: marlenemartinezriekes@gmail.com</p>
       <p className="mb-2">Horario: Lun a Vie de 9 a 18 hs</p>
     </div>
 
