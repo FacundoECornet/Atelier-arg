@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropertyList from "./propiedadesCards";
-import emailjs from "@emailjs/browser";
+
 import fondo from '../assets/fondo.webp';
 
 const Body = () => {
