@@ -9,7 +9,7 @@ const Tooltip = () => {
           <a
             data-social="whatsapp"
             aria-label="Whatsapp"
-            href="https://wa.me/5493814159547"
+            href="https://wa.me/5493812105720"
             target="_blank"
             rel="noopener noreferrer"
           >

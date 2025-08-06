@@ -12,9 +12,9 @@ return(
     {/* Contacto */}
     <div>
       <h3 className="text-xl font-semibold mb-4">Contacto</h3>
-      <p className="mb-2">Teléfono: (381) 415 9547</p>
-      <p className="mb-2">Email: marlenemartinezriekes@gmail.com</p>
-      <p className="mb-2">Horario: Lun a Vie de 9 a 18 hs</p>
+      <p className="mb-2">Teléfono: (381) 210 5720</p>
+      <p className="mb-2">Email: gestion@atelierhomes.es</p>
+      <p className="mb-2">Horario: Lun a Vie de 9 a 19 hs</p>
     </div>
 
     {/* Ubicación */}

@@ -31,7 +31,7 @@ const getNoticias = () =>{
    
     return (
       <div className="px-4 py-8" id="noticias">
-      <h1 className="text-3xl font-bold mb-6 text-center">Noticias</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Novedades</h1>
     
       <ul className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-gray-300">
         {noticias.map((noticia) => (
