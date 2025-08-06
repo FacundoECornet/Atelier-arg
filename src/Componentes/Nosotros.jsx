@@ -51,7 +51,7 @@ export default function OficinasCarousel() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
   {images.map(({ img, text, link, external, isIntro }, index) => (
     <div
       key={index}
