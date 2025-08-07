@@ -6,7 +6,7 @@ import post from "../Imagenes/post-venta.webp";
 import contrato from "../Imagenes/Atelier-llaves.webp";
 import mark from "../Imagenes/mark.webp";
 import visita from "../Imagenes/visita (1).webp";
-import informe from "../Imagenes/Informe.webp";
+import informe from "../Imagenes/informe.webp";
 
 
 
