@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../Firebase";
 
@@ -7,84 +7,88 @@ export default function Equipo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Nosotros"));
-        const teamData = [];
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          teamData.push({ id: doc.id, ...data });
-        });
-
-        setTeamMembers(teamData);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching team members:", err);
-        setError(
-          "Error al cargar los datos del equipo. Por favor, intenta de nuevo más tarde."
-        );
-        setLoading(false);
-      }
-    };
-
-    fetchTeamMembers();
+  // Fetch optimizado con useCallback para evitar recreaciones innecesarias
+  const fetchTeamMembers = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const querySnapshot = await getDocs(collection(db, "Nosotros"));
+      const teamData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTeamMembers(teamData);
+    } catch (err) {
+      console.error("Error fetching team members:", err);
+      setError("Error al cargar los datos del equipo.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchTeamMembers();
+  }, [fetchTeamMembers]);
+
+  // Manejador para fallback de imagen, con uso de propiedad 'once' para evitar loops infinitos
   const handleImageError = (e) => {
-    e.target.src = "/placeholder-person.jpg";
+    if (!e.target.dataset.error) {
+      e.target.src = "/placeholder-person.jpg";
+      e.target.dataset.error = "true"; // Marcar que ya reemplazó la imagen para evitar loop
+    }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-xl font-semibold text-gray-600">Cargando...</div>
-      </div>
+      <section className="flex justify-center items-center h-64">
+        <span className="text-xl font-semibold text-gray-600">Cargando...</span>
+      </section>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-xl font-semibold text-red-600">{error}</div>
-      </div>
+      <section className="flex justify-center items-center h-64">
+        <span className="text-xl font-semibold text-red-600">{error}</span>
+      </section>
     );
   }
 
   return (
     <>
       <h1 className="text-3xl font-bold mb-6 text-center mt-12">Nuestro equipo</h1>
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-          {teamMembers.map((member) => (
-            <div
-              key={member.id}
+      <section className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {teamMembers.map(({ id, img, nombre, cargo, descripcion }) => (
+            <article
+              key={id}
               className="relative group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center w-full max-w-xs mx-auto cursor-pointer"
-              style={{ aspectRatio: "3 / 4" }} // Mantener tamaño uniforme
+              style={{ aspectRatio: "3 / 4" }}
+              tabIndex={0} // Mejora accesibilidad
+              aria-label={`Miembro del equipo: ${nombre || "Nombre no disponible"}`}
             >
-              {/* Imagen */}
               <img
-                src={member.img || "https://via.placeholder.com/300x400?text=Sin+Imagen"}
-                alt={member.nombre || "Miembro del equipo"}
+                src={img || "https://via.placeholder.com/300x400?text=Sin+Imagen"}
+                alt={nombre || "Miembro del equipo"}
                 className="w-full h-full object-cover object-[center_20%] transition-transform duration-300 group-hover:scale-110"
                 onError={handleImageError}
                 loading="lazy"
+                decoding="async" // Mejora carga de imagen
+                fetchpriority="low" // Permite priorizar carga si necesario
               />
 
-              {/* Overlay con info, oculto por defecto */}
+              {/* Overlay con info */}
               <div className="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center text-center p-4 text-white">
-                <h3 className="text-lg font-semibold">{member.nombre}</h3>
-                <p className="text-sm mt-1">{member.cargo}</p>
-                {member.descripcion && (
-                  <p className="text-xs mt-2">{member.descripcion}</p>
+                <h3 className="text-lg font-semibold">{nombre || "Nombre no disponible"}</h3>
+                <p className="text-sm mt-1">{cargo || "Cargo no especificado"}</p>
+                {descripcion && (
+                  <p className="text-xs mt-2 line-clamp-4">{descripcion}</p>
                 )}
               </div>
-            </div>
+            </article>
           ))}
         </div>
-      </div>
+      </section>
     </>
   );
 }
-
