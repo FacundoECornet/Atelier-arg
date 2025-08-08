@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../Firebase";
 
 export default function Equipo() {
@@ -8,27 +8,23 @@ export default function Equipo() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "Nosotros"),
-      (snapshot) => {
+    const fetchTeamMembers = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Nosotros"));
         const teamData = [];
-        snapshot.forEach((doc) => {
-          teamData.push({ id: doc.id, ...doc.data() });
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          teamData.push({ id: doc.id, ...data });
         });
         setTeamMembers(teamData);
         setLoading(false);
-        setError(null);
-      },
-      (err) => {
+      } catch (err) {
         console.error("Error fetching team members:", err);
-        setError(
-          "Error al cargar los datos del equipo. Por favor, intenta de nuevo más tarde."
-        );
+        setError("Error al cargar los datos del equipo. Por favor, intenta de nuevo más tarde.");
         setLoading(false);
       }
-    );
-
-    return () => unsubscribe();
+    };
+    fetchTeamMembers();
   }, []);
 
   const handleImageError = (e) => {
@@ -53,18 +49,9 @@ export default function Equipo() {
 
   return (
     <>
-      <header className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Nuestro equipo
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Conoce a los profesionales que hacen posible nuestro trabajo
-        </p>
-        <div className="mt-6 w-24 h-1 bg-black mx-auto rounded"></div>
-      </header>
-
+      <h1 className="text-3xl font-bold mb-6 text-center mt-12">Nuestro equipo</h1>
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {teamMembers.map((member) => (
             <div
               key={member.id}
@@ -72,27 +59,24 @@ export default function Equipo() {
               style={{ aspectRatio: "3 / 4" }}
             >
               {/* Imagen */}
-              <div className="w-full h-full relative bg-gray-100">
-                <img
-                  src={member.img || "https://via.placeholder.com/300x400?text=Sin+Imagen"}
-                  alt={member.nombre || "Miembro del equipo"}
-                  className="w-full h-full object-cover object-[center_20%] transition-transform duration-300 group-hover:scale-110"
-                  onError={handleImageError}
-                  loading="lazy"
-                />
-              </div>
+              <img
+                src={member.img || "https://via.placeholder.com/300x400?text=Sin+Imagen"}
+                alt={member.nombre || "Miembro del equipo"}
+                className="w-full h-full object-cover object-[center_20%] transition-transform duration-500 group-hover:scale-110"
+                onError={handleImageError}
+                loading="lazy"
+                decoding="async"
+                width={300}
+                height={400}
+              />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="text-xl font-bold mb-2">{member.nombre}</h3>
-                  <p className="text-sm font-medium text-yellow-200 mb-2 uppercase tracking-wide">
-                    {member.cargo}
-                  </p>
+              {/* Overlay con info */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white">
+                <div className="transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-xl font-bold mb-1">{member.nombre}</h3>
+                  <p className="text-sm font-medium text-yellow-300 uppercase tracking-wide">{member.cargo}</p>
                   {member.descripcion && (
-                    <p className="text-sm leading-relaxed opacity-90 line-clamp-3">
-                      {member.descripcion}
-                    </p>
+                    <p className="text-xs mt-2 line-clamp-3">{member.descripcion}</p>
                   )}
                 </div>
               </div>
