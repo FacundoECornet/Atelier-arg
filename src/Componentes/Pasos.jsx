@@ -11,176 +11,169 @@ import informe from '../Imagenes/informe.webp';
 export default function Pasos() {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Definimos los pasos del proceso inmobiliario (similar a los de la imagen)
   const pasos = [
     {
       id: 'consulta',
-      icon: '🏛️', // Edificio clásico/columna, representa formalidad y profesionalidad
+      icon: '🏛️',
       title: 'Consulta',
       content:
-        'Vender una vivienda con éxito significa encontrar rápidamente al comprador adecuado y conseguir el precio de venta óptimo. Los consultores inmobiliarios poseen sólidos conocimientos en la materia y le ofrecen un asesoramiento inicial competente e individual.',
+        'Vender una vivienda con éxito significa encontrar rápidamente al comprador adecuado y conseguir el precio de venta óptimo...',
       imageSrc: consulta,
     },
     {
       id: 'valoracion',
-      icon: '⚖️', // Balanza, simboliza valoración justa y equilibrada
+      icon: '⚖️',
       title: 'Valoración',
       content:
-        'Valoramos su propiedad utilizando análisis de mercado precisos y nuestra amplia experiencia en el sector inmobiliario, para determinar el precio óptimo que garantiza tanto competitividad como rentabilidad.',
+        'Valoramos su propiedad utilizando análisis de mercado precisos y nuestra amplia experiencia en el sector...',
       imageSrc: valor,
     },
     {
       id: 'exposicion',
-      icon: '📋', // Portapapeles, representa documentación profesional
+      icon: '📋',
       title: 'Exposición',
       content:
-        'Preparamos documentación profesional y fotografías de alta calidad para mostrar su propiedad en su mejor luz y destacar todas sus características más atractivas.',
+        'Preparamos documentación profesional y fotografías de alta calidad para mostrar su propiedad...',
       imageSrc: casa,
     },
     {
       id: 'marketing',
-      icon: '📢', // Megáfono, representa difusión y visibilidad
+      icon: '📢',
       title: 'Marketing',
       content:
-        'Implementamos estrategias de marketing personalizadas utilizando plataformas digitales, redes sociales y nuestra red exclusiva de contactos para maximizar la visibilidad de su propiedad.',
+        'Implementamos estrategias de marketing personalizadas utilizando plataformas digitales...',
       imageSrc: mark,
     },
     {
       id: 'visitas',
-      icon: '🔑', // Llave, símbolo clásico inmobiliario
+      icon: '🔑',
       title: 'Visitas',
       content:
-        'Organizamos y guiamos visitas con compradores preseleccionados, asegurándonos de presentar su propiedad de manera profesional y respondiendo a todas las consultas.',
+        'Organizamos y guiamos visitas con compradores preseleccionados, asegurándonos de presentar su propiedad...',
       imageSrc: visita,
     },
     {
       id: 'informes',
-      icon: '📈', // Gráfico ascendente, representa análisis profesional
+      icon: '📈',
       title: 'Informes',
       content:
-        'Le proporcionamos informes detallados sobre el interés generado, feedback de las visitas y la evolución del proceso de venta, manteniéndole completamente informado.',
+        'Le proporcionamos informes detallados sobre el interés generado, feedback de las visitas...',
       imageSrc: informe,
     },
     {
       id: 'contrato',
-      icon: '✒️', // Pluma estilográfica, representa firma de documentos formales
+      icon: '✒️',
       title: 'Contrato',
       content:
-        'Gestionamos todas las negociaciones y trámites legales necesarios para asegurar un contrato de compraventa que proteja sus intereses y garantice una transacción segura.',
+        'Gestionamos todas las negociaciones y trámites legales necesarios para asegurar un contrato seguro...',
       imageSrc: contrato,
     },
     {
       id: 'servicio',
-      icon: '🤲', // Manos ofreciendo, representa servicio y atención continua
+      icon: '🤲',
       title: 'Post-venta',
       content:
-        'Nuestro compromiso no termina con la venta. Seguimos a su disposición para cualquier consulta posterior y le ayudamos con cualquier gestión relacionada con la propiedad vendida.',
+        'Nuestro compromiso no termina con la venta. Seguimos a su disposición para cualquier consulta posterior...',
       imageSrc: post,
     },
   ];
 
-  const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % pasos.length);
-  };
+  const handleNext = () => setActiveIndex((prev) => (prev + 1) % pasos.length);
+  const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pasos.length) % pasos.length);
 
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + pasos.length) % pasos.length);
-  };
-
-  // ...existing code...
+  const paso = pasos[activeIndex];
 
   return (
-    <>
-      <div className="max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-10" id="saber-mas">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-center mb-6 sm:mb-10">
-          Nuestro 8 pasos al éxito
+    <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto">
+      {/* Título */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+          Nuestros 8 Pasos al Éxito
         </h1>
+        <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
+          Un proceso probado que te guía desde la consulta inicial hasta el éxito de tu inversión
+        </p>
+      </div>
 
-        {/* Iconos de navegación superior */}
-        <div className="flex justify-between items-center mb-6 sm:mb-8 overflow-x-auto pb-2 relative scrollbar-hide">
-          <div className="absolute top-10 left-0 w-full h-0.5 bg-gray-200 -z-0" />
+      {/* Timeline centrado */}
+      <div className="relative flex justify-center items-center overflow-x-auto px-4 sm:px-0 mb-8">
+        <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0 mx-6 rounded-full"></div>
 
-          {pasos.map((paso, index) => (
-            <div
-              key={paso.id}
-              onClick={() => setActiveIndex(index)}
-              className="flex flex-col items-center cursor-pointer min-w-[60px] sm:min-w-[80px] mx-1 sm:mx-2 relative z-10"
-            >
+        <div className="flex space-x-4 sm:space-x-6 relative z-10">
+          {pasos.map((p, i) => {
+            const isActive = i === activeIndex;
+            const isCompleted = i < activeIndex;
+
+            return (
               <div
-                className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center mb-1 sm:mb-2 border bg-white ${
-                  activeIndex === index ? 'border-black-600' : 'border-gray-300'
-                }`}
+                key={p.id}
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => setActiveIndex(i)}
               >
-                <span className="text-xl sm:text-2xl">{paso.icon}</span>
-              </div>
-              <span className="text-[10px] sm:text-xs text-center whitespace-nowrap">
-                {paso.title}
-              </span>
-              <div
-                className={`h-1 w-full mt-1 sm:mt-2 rounded-full ${
-                  activeIndex === index ? 'bg-black' : 'bg-gray-200'
-                }`}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Contenido del carrusel */}
-        <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="relative h-[400px] xs:h-[450px] sm:h-[450px]">
-            {' '}
-            {/* Reducida la altura en móvil */}
-            {pasos.map((paso, index) => (
-              <div
-                key={paso.id}
-                className={`absolute inset-0 transition-opacity duration-500 ${
-                  activeIndex === index ? 'opacity-100 z-10' : 'opacity-0 -z-10'
-                }`}
-              >
-                <div className="flex flex-col sm:flex-row h-full">
-                  <div className="h-48 sm:h-full sm:w-full bg-gray-100 relative">
-                    {' '}
-                    {/* Añadido relative */}
-                    <img
-                      src={paso.imageSrc}
-                      alt={paso.title}
-                      className="w-full h-full object-contain sm:object-cover object-center" // Cambiado a object-contain en móvil
-                      onError={(e) => {
-                        e.target.src = '/images/default-property.jpg';
-                      }}
-                    />
-                  </div>
-
-                  <div className="p-4 sm:p-6 md:p-10 sm:w-1/2 flex flex-col justify-center">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-3">{paso.title}</h2>
-                    <p className="text-sm sm:text-base text-gray-700">{paso.content}</p>
-                  </div>
+                <div
+                  className={`w-9 h-9 sm:w-12 sm:h-12 flex items-center justify-center rounded-full shadow-md text-lg sm:text-xl transition-all ${
+                    isActive
+                      ? 'bg-black text-white scale-110'
+                      : isCompleted
+                      ? 'bg-gray-800 text-white'
+                      : 'bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  {p.icon}
                 </div>
+                <span className="mt-1 text-[7px] sm:text-[10px] text-center max-w-[50px] truncate">
+                  {p.title}
+                </span>
               </div>
-            ))}
-          </div>
-
-          {/* Flechas de navegación inferior */}
-          <div className="flex justify-center items-center gap-3 sm:gap-4 py-2 sm:py-4">
-            {/* Reducido el padding vertical en móvil */}
-            <button
-              onClick={handlePrev}
-              className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-            >
-              &#10094;
-            </button>
-            <span className="text-xs sm:text-sm text-gray-500">
-              {activeIndex + 1} de {pasos.length}
-            </span>
-            <button
-              onClick={handleNext}
-              className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-            >
-              &#10095;
-            </button>
-          </div>
+            );
+          })}
         </div>
       </div>
-    </>
+
+      {/* Contenido principal responsive */}
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="flex flex-col lg:flex-row items-stretch">
+          {/* Imagen ajustable sin cortarse */}
+          <div className="lg:w-1/2 h-48 sm:h-64 lg:h-96 flex-shrink-0 relative overflow-hidden">
+            <img
+              src={paso.imageSrc}
+              alt={paso.title}
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              onError={(e) => {
+                e.target.src = '/api/placeholder/600/400';
+              }}
+            />
+          </div>
+
+          <div className="lg:w-1/2 p-4 sm:p-6 lg:p-10 flex flex-col justify-center">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-black text-sm font-medium mb-3">
+              <span className="mr-2">{paso.icon}</span>
+              Paso {activeIndex + 1}
+            </div>
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">{paso.title}</h2>
+            <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{paso.content}</p>
+          </div>
+        </div>
+
+        {/* Navegación */}
+        <div className="flex justify-between items-center p-3 sm:p-4 bg-gray-50 border-t border-gray-200">
+          <button
+            onClick={handlePrev}
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded-xl bg-white border border-gray-300 hover:bg-gray-50 shadow-sm transition text-sm sm:text-base"
+          >
+            Anterior
+          </button>
+          <span className="text-sm sm:text-base text-gray-600">
+            {activeIndex + 1} de {pasos.length}
+          </span>
+          <button
+            onClick={handleNext}
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded-xl bg-black text-white hover:bg-gray-800 shadow transition text-sm sm:text-base"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
