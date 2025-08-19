@@ -17,24 +17,28 @@ import PropiedadesInfo from './Propiedades/PropiedadesInfo.jsx';
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Body />
-              <Equipo />
-              <Pasos />
-              <PropertyList />
-              <Formulario />
-              <Noticias />
-            </>
-          }
-        />
-        <Route path="/propiedades/:id" element={<PropiedadesInfo />} />
-      </Routes>
-      <Footer />
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div className="flex flex-col">
+                  <Body />
+                  <Equipo />
+                  <Pasos />
+                  <PropertyList />
+                  <Formulario />
+                  <Noticias />
+                </div>
+              }
+            />
+            <Route path="/propiedades/:id" element={<PropiedadesInfo />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
