@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import Swal from "sweetalert2";
-import { Map, Marker } from "pigeon-maps";
+import React, { useState, useEffect, useRef } from 'react';
+import Swal from 'sweetalert2';
+import { Map, Marker } from 'pigeon-maps';
 
 const ModalTasacion = ({ showModal, handleCloseModal }) => {
   const [step, setStep] = useState(1);
   const [loadingGeo, setLoadingGeo] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
-    dni: "",
-    correo: "",
-    numero: "",
-    mensajeBreve: "",
-    tipo: "",
-    operacion: "",
-    habitaciones: "",
-    banos: "",
-    metros: "",
-    antiguedad: "",
-    cochera: "",
-    patio: "",
-    pileta: "",
-    piso: "",
-    estado: "",
-    direccion: "",
-    descripcion: "",
+    nombre: '',
+    apellido: '',
+    dni: '',
+    correo: '',
+    numero: '',
+    mensajeBreve: '',
+    tipo: '',
+    operacion: '',
+    habitaciones: '',
+    banos: '',
+    metros: '',
+    antiguedad: '',
+    cochera: '',
+    patio: '',
+    pileta: '',
+    piso: '',
+    estado: '',
+    direccion: '',
+    descripcion: '',
   });
 
   const [location, setLocation] = useState([-26.800137, -65.302171]);
@@ -49,8 +49,8 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       setLoadingGeo(true);
       fetch(
         `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(
-          formData.direccion + ", Tucumán, Argentina"
-        )}`
+          formData.direccion + ', Tucumán, Argentina',
+        )}`,
       )
         .then((res) => res.json())
         .then((data) => {
@@ -89,9 +89,9 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
 
     async function fetchReverse(lat, lon) {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`,
       );
-      if (!res.ok) throw new Error("Error en fetch");
+      if (!res.ok) throw new Error('Error en fetch');
       return await res.json();
     }
 
@@ -143,7 +143,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    if (e.target.name === "direccion") {
+    if (e.target.name === 'direccion') {
       setShowSuggestions(true);
     }
   };
@@ -160,7 +160,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
 
   // Manejar tecla enter en input direccion para elegir la primera sugerencia si hay
   const handleDireccionKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
       if (suggestions.length > 0) {
         handleSuggestionClick(suggestions[0]);
@@ -190,48 +190,48 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       !formData.direccion
     ) {
       Swal.fire({
-        icon: "warning",
-        title: "Por favor completa los campos obligatorios.",
+        icon: 'warning',
+        title: 'Por favor completa los campos obligatorios.',
       });
       return;
     }
 
     try {
-      const response = await fetch("https://formspree.io/f/xrblyoez", {
-        method: "POST",
+      const response = await fetch('https://formspree.io/f/xrblyoez', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         Swal.fire({
-          title: "¡Solicitud enviada!",
-          text: "Nos contactaremos pronto para coordinar la tasación.",
-          icon: "success",
+          title: '¡Solicitud enviada!',
+          text: 'Nos contactaremos pronto para coordinar la tasación.',
+          icon: 'success',
         });
         setFormData({
-          nombre: "",
-          apellido: "",
-          dni: "",
-          correo: "",
-          numero: "",
-          mensajeBreve: "",
-          tipo: "",
-          operacion: "",
-          habitaciones: "",
-          banos: "",
-          metros: "",
-          antiguedad: "",
-          cochera: "",
-          patio: "",
-          pileta: "",
-          piso: "",
-          estado: "",
-          direccion: "",
-          descripcion: "",
+          nombre: '',
+          apellido: '',
+          dni: '',
+          correo: '',
+          numero: '',
+          mensajeBreve: '',
+          tipo: '',
+          operacion: '',
+          habitaciones: '',
+          banos: '',
+          metros: '',
+          antiguedad: '',
+          cochera: '',
+          patio: '',
+          pileta: '',
+          piso: '',
+          estado: '',
+          direccion: '',
+          descripcion: '',
         });
         setStep(1);
         handleCloseModal();
@@ -240,9 +240,9 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       }
     } catch {
       Swal.fire({
-        title: "Error",
-        text: "Ocurrió un problema al enviar el formulario.",
-        icon: "error",
+        title: 'Error',
+        text: 'Ocurrió un problema al enviar el formulario.',
+        icon: 'error',
       });
     }
   };
@@ -273,11 +273,11 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
               key={n}
               className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-sm sm:text-base transition-all duration-300 ${
                 step === n
-                  ? "bg-black text-white"
-                  : "bg-gray-300 text-gray-700 cursor-pointer hover:bg-gray-400"
+                  ? 'bg-black text-white'
+                  : 'bg-gray-300 text-gray-700 cursor-pointer hover:bg-gray-400'
               }`}
               onClick={() => setStep(n)}
-              style={{ userSelect: "none" }}
+              style={{ userSelect: 'none' }}
             >
               {n}
             </div>
@@ -420,11 +420,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                 className="p-3 text-sm border rounded focus:ring-2 focus:ring-black"
               />
               <div className="col-span-full flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="text-black underline"
-                >
+                <button type="button" onClick={handleBack} className="text-black underline">
                   Atrás
                 </button>
                 <button
@@ -500,11 +496,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                 <option>No</option>
               </select>
               <div className="col-span-full flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="text-black underline"
-                >
+                <button type="button" onClick={handleBack} className="text-black underline">
                   Atrás
                 </button>
                 <button
@@ -545,7 +537,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                       className="cursor-pointer px-4 py-2 hover:bg-gray-200"
                       tabIndex={0}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                        if (e.key === 'Enter') {
                           e.preventDefault();
                           handleSuggestionClick(sug);
                         }
@@ -560,9 +552,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
               <div className="relative w-full h-52 sm:h-64 md:h-72 rounded overflow-hidden border">
                 {loadingGeo && (
                   <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
-                    <span className="text-gray-700 font-semibold">
-                      Buscando ubicación...
-                    </span>
+                    <span className="text-gray-700 font-semibold">Buscando ubicación...</span>
                   </div>
                 )}
                 <Map
@@ -586,11 +576,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
               />
 
               <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="text-black underline"
-                >
+                <button type="button" onClick={handleBack} className="text-black underline">
                   Atrás
                 </button>
                 <button
