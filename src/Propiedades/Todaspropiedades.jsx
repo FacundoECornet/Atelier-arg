@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const AllProperties = () => {
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState('Todas');
+  const [selectedLocation, setSelectedLocation] = useState('Tucumán');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +18,10 @@ const AllProperties = () => {
           ...doc.data(),
         }));
         setProperties(data);
-        setFilteredProperties(data);
+        // Por defecto mostramos propiedades de Tucumán
+        setFilteredProperties(
+          data.filter((property) => getProvince(property.ubicacion) === 'Tucumán'),
+        );
       } catch (error) {
         console.error('Error cargando propiedades:', error);
       }
@@ -32,7 +35,7 @@ const AllProperties = () => {
     if (!ubicacion) return 'Otra';
     const lower = ubicacion.toLowerCase();
     const tucumanLocalidades = [
-      'san miguel de tucumán',
+      'san miguel de tucuman',
       'tucumán',
       'yerba buena',
       'concepción',
@@ -54,13 +57,9 @@ const AllProperties = () => {
 
   const filterByLocation = (location) => {
     setSelectedLocation(location);
-    if (location === 'Todas') {
-      setFilteredProperties(properties);
-    } else {
-      setFilteredProperties(
-        properties.filter((property) => getProvince(property.ubicacion) === location),
-      );
-    }
+    setFilteredProperties(
+      properties.filter((property) => getProvince(property.ubicacion) === location),
+    );
   };
 
   return (
@@ -71,7 +70,7 @@ const AllProperties = () => {
 
       {/* Filtro por ubicación */}
       <div className="flex justify-center gap-4 mb-8">
-        {['Todas', 'Tucumán', 'Buenos Aires'].map((loc) => (
+        {['Tucumán', 'Buenos Aires'].map((loc) => (
           <button
             key={loc}
             onClick={() => filterByLocation(loc)}

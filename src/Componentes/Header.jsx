@@ -1,17 +1,17 @@
-import React from "react";
-import { Disclosure } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Disclosure } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const navigation = [
-  { name: "Inicio", to: "/" },
-  { name: "Propiedades", to: "#propiedades" },
-  { name: "Noticias", to: "#noticias" },
-  { name: "Saber más", to: "#saber-mas" },
+  { name: 'Inicio', to: '/' },
+  { name: 'Propiedades', to: '#propiedades' },
+  { name: 'Noticias', to: '#noticias' },
+  { name: 'Saber más', to: '#pasos' },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Navbar() {
@@ -21,29 +21,29 @@ export default function Navbar() {
   // Función para manejar clicks en navegación
   const handleClick = (to) => (e) => {
     // Si es "Inicio", navegamos a "/"
-    if (to === "/") {
-      if (location.pathname !== "/") {
+    if (to === '/') {
+      if (location.pathname !== '/') {
         e.preventDefault();
-        navigate("/");
+        navigate('/');
       }
       // Si ya estamos en "/", no hacemos nada (es un Link normal)
       return;
     }
 
     // Para anclas con #
-    if (to.startsWith("#")) {
+    if (to.startsWith('#')) {
       // Si estamos en la página principal, scroll manual a la sección
-      if (location.pathname === "/") {
+      if (location.pathname === '/') {
         e.preventDefault();
         const id = to.substring(1); // quitar #
         const el = document.getElementById(id);
         if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
+          el.scrollIntoView({ behavior: 'smooth' });
         }
       } else {
         // Si no estamos en la página principal, navegamos a "/" y luego hacemos scroll
         e.preventDefault();
-        navigate("/");
+        navigate('/');
 
         // Como el navigate es async, podemos hacer el scroll con un pequeño delay
         // o mejor con un efecto en la página principal que escuche la url (más avanzado)
@@ -51,7 +51,7 @@ export default function Navbar() {
         setTimeout(() => {
           const el = document.getElementById(to.substring(1));
           if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
+            el.scrollIntoView({ behavior: 'smooth' });
           }
         }, 100);
       }
@@ -60,11 +60,11 @@ export default function Navbar() {
 
   // Función para determinar si el link está activo
   const isActive = (to) => {
-    if (to === "/") {
-      return location.pathname === "/";
+    if (to === '/') {
+      return location.pathname === '/';
     }
-    if (to.startsWith("#")) {
-      return location.pathname === "/" && location.hash === to;
+    if (to.startsWith('#')) {
+      return location.pathname === '/' && location.hash === to;
     }
     return false;
   };
@@ -97,9 +97,9 @@ export default function Navbar() {
                       onClick={handleClick(item.to)}
                       className={classNames(
                         isActive(item.to)
-                          ? "bg-black text-white"
-                          : "text-black hover:bg-black hover:text-white",
-                        "px-4 py-2 rounded-md text-sm font-medium transition cursor-pointer"
+                          ? 'bg-black text-white'
+                          : 'text-black hover:bg-black hover:text-white',
+                        'px-4 py-2 rounded-md text-sm font-medium transition cursor-pointer',
                       )}
                     >
                       {item.name}

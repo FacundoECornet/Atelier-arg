@@ -84,7 +84,7 @@ export default function Pasos() {
   const paso = pasos[activeIndex];
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto">
+    <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto" id="pasos">
       {/* Título */}
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
