@@ -43,7 +43,7 @@ const PropertyList = () => {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto" id="propiedades">
-      {/* Título principal con el mismo estilo que Pasos */}
+      {/* Título principal */}
       <div className="text-center mb-12 sm:mb-16">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
           Propiedades en Venta
@@ -115,16 +115,16 @@ const PropertyList = () => {
       {properties.length > initialCount && (
         <div className="mt-12 text-center">
           <button
-            onClick={handleToggleProperties}
+            onClick={() => navigate('/propiedades')} // Redirige a la página con todas las propiedades
             className="inline-flex items-center space-x-2 px-8 py-3 bg-white text-black border-2 border-black rounded-xl font-semibold hover:bg-black hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
           >
-            <span>{visibleCount < properties.length ? 'Ver Más Propiedades' : 'Ver Menos'}</span>
+            <span>Ver Más Propiedades</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d={visibleCount < properties.length ? 'M19 9l-7 7-7-7' : 'M5 15l7-7 7 7'}
+                d="M19 9l-7 7-7-7"
               />
             </svg>
           </button>

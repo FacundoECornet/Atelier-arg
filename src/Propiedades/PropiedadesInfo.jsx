@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../Firebase";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../Firebase';
 
 const PropiedadesInfo = () => {
   const { id } = useParams();
@@ -17,7 +17,7 @@ const PropiedadesInfo = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "propiedades"));
+        const querySnapshot = await getDocs(collection(db, 'propiedades'));
         const data = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -26,7 +26,7 @@ const PropiedadesInfo = () => {
         setProperty(found);
         setLoading(false);
       } catch (error) {
-        setError("Error al cargar la propiedad.");
+        setError('Error al cargar la propiedad.');
         setLoading(false);
       }
     };
@@ -41,14 +41,10 @@ const PropiedadesInfo = () => {
   const closeModal = () => setModalOpen(false);
 
   const prevImage = () =>
-    setCurrentImgIndex((prev) =>
-      prev === 0 ? property.galeria.length - 1 : prev - 1
-    );
+    setCurrentImgIndex((prev) => (prev === 0 ? property.galeria.length - 1 : prev - 1));
 
   const nextImage = () =>
-    setCurrentImgIndex((prev) =>
-      prev === property.galeria.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImgIndex((prev) => (prev === property.galeria.length - 1 ? 0 : prev + 1));
 
   if (loading) return <div className="text-center py-20 text-xl">Cargando...</div>;
   if (error) return <div className="text-center text-red-500 py-20">{error}</div>;
@@ -118,38 +114,55 @@ const PropiedadesInfo = () => {
 
       {/* Información */}
       <section className="max-w-xl mx-auto mt-14 bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-6">
-  <div className="text-center">
-    <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
-      Ubicación
-    </h3>
-    <p className="text-lg text-gray-800">{property.ubicacion}</p>
-  </div>
-  <hr className="border-gray-200" />
-  <div className="text-center">
-    <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
-      Características
-    </h3>
-    <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
-      {property.caracteristicas}
-    </p>
-  </div>
-  <div className="flex justify-center gap-4 pt-3">
-    <button
-      onClick={() => navigate(-1)}
-      className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
-    >
-      ← Volver
-    </button>
-    <button
-      onClick={() => navigate('/#contacto')}
-      className="bg-black text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
-    >
-      Consultar Propiedad
-    </button>
-  </div>
-</section>
+        {/* Ubicación con link a Maps */}
+        <div className="text-center">
+          <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+            Ubicación
+          </h3>
+          {property.ubicURL ? (
+            <a
+              href={property.ubicURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg text-blue-600 hover:underline"
+            >
+              {property.ubicacion}
+            </a>
+          ) : (
+            <p className="text-lg text-gray-800">{property.ubicacion}</p>
+          )}
+        </div>
 
+        <hr className="border-gray-200" />
 
+        <div className="text-center">
+          <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+            Características
+          </h3>
+          <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
+            {property.caracteristicas}
+          </p>
+        </div>
+
+        <div className="flex justify-center gap-4 pt-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
+          >
+            ← Volver
+          </button>
+          <button
+            onClick={() => {
+              const mensaje = `Hola, buen día. Me interesa la propiedad "${property.Nombre}". ¿Podrían darme más información, por favor?`;
+              const url = `https://wa.me/5493812105720?text=${encodeURIComponent(mensaje)}`;
+              window.open(url, '_blank');
+            }}
+            className="bg-black text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
+          >
+            Consultar Propiedad
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
