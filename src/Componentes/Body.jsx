@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import PropertyList from "./propiedadesCards";
-import ModalTasacion from "./Modal"; // asegúrate de que esté bien importado
+import React, { useState } from 'react';
+import PropertyList from './propiedadesCards';
+import ModalTasacion from './Modal'; // asegúrate de que esté bien importado
 import fondo from '../assets/fondo.webp';
-import OficinasCarousel from "./Nosotros";
+import OficinasCarousel from './Nosotros';
+import pareja from '../Imagenes/pareja-modal.jpg';
 
 const Body = () => {
   const [showModal, setShowModal] = useState(false);
@@ -16,12 +17,12 @@ const Body = () => {
   };
 
   const handleComprarClick = () => {
-    document.getElementById("property-list")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById('property-list')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
-     <OficinasCarousel />
+      <OficinasCarousel />
       {/* Botón WhatsApp */}
       <div className="fixed bottom-4 right-4 z-50">
         <a
@@ -30,19 +31,60 @@ const Body = () => {
           rel="noopener noreferrer"
           className="bg-green-500 text-white p-3 rounded-full flex items-center justify-center w-12 h-12 transition hover:bg-green-600"
         >
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-6 h-6" />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+            alt="WhatsApp"
+            className="w-6 h-6"
+          />
         </a>
       </div>
 
-      {/* Botón de venta */}
-      <div className="z-50 bg-gray-200 mx-auto p-8 rounded-lg shadow-lg text-center w-full">
-        <h3 className="text-2xl font-semibold mb-6">Quiero vender mi propiedad</h3>
-        <button
-          onClick={handleVenderClick}
-          className="bg-black text-white transition-all duration-300 border border-black px-6 py-3 rounded-md hover:-translate-y-1 hover:scale-105 hover:bg-white hover:text-black"
-        >
-          Vender
-        </button>
+      {/* Sección de venta con imagen de fondo mejorada */}
+      <div className="w-full bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-center min-h-[500px]">
+              {/* Contenido de texto - lado izquierdo */}
+              <div className="lg:w-1/2 p-8 lg:p-16 bg-white rounded-l-3xl">
+                <h2 className="text-4xl lg:text-5xl font-bold text-gray-400 mb-6 leading-tight">
+                  Venda su propiedad con
+                  <br />
+                  <span className="text-black">Atelier Homes Argentina</span>
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  Evaluaremos todo el potencial de su propiedad, teniendo en cuenta todos sus
+                  detalles y características especiales, y lo incluiremos en nuestra valoración
+                  inmobiliaria gratuita y sin compromiso.
+                </p>
+
+                {/* Botones */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a
+                    href="#contacto"
+                    className="border-2 border-black text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:bg-black hover:text-white text-center"
+                  >
+                    Póngase en contacto
+                  </a>
+                  <button
+                    onClick={handleVenderClick}
+                    className="bg-black text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:bg-black border-2 border-black"
+                  >
+                    Valoración en línea
+                  </button>
+                </div>
+              </div>
+
+              {/* Imagen - lado derecho */}
+              <div className="lg:w-1/2 h-64 lg:h-[500px] relative rounded-r-3xl overflow-hidden">
+                <img
+                  src={pareja}
+                  alt="Pareja en interior moderno"
+                  className="w-full h-full object-cover rounded-r-3xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Modal de tasación en 3 pasos */}

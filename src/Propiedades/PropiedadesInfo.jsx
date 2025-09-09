@@ -114,6 +114,19 @@ const PropiedadesInfo = () => {
 
       {/* Información */}
       <section className="max-w-xl mx-auto mt-14 bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-6">
+        {/* Precio */}
+        {property.precio && (
+          <>
+            <div className="text-center">
+              <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                Precio
+              </h3>
+              <p className="text-2xl font-bold text-green-600">{property.precio}</p>
+            </div>
+            <hr className="border-gray-200" />
+          </>
+        )}
+
         {/* Ubicación con link a Maps */}
         <div className="text-center">
           <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">

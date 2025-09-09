@@ -75,10 +75,15 @@ const PropertyList = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute top-6 left-6 z-20">
+                  <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
                     <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-black text-sm font-medium border border-gray-200">
                       {property.ubicacion || 'Sin ubicación'}
                     </div>
+                    {property.precio && (
+                      <div className="inline-flex items-center px-3 py-1 rounded-full bg-black/90 backdrop-blur-sm text-white text-sm font-semibold border border-white/20">
+                        {property.precio}
+                      </div>
+                    )}
                   </div>
                 </div>
 
