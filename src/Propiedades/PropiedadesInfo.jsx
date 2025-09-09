@@ -23,10 +23,14 @@ const PropiedadesInfo = () => {
           ...doc.data(),
         }));
         const found = data.find((p) => p.id === id);
-        setProperty(found);
-        setLoading(false);
+        if (!found) {
+          setError('Propiedad no encontrada.');
+        } else {
+          setProperty(found);
+        }
       } catch (error) {
         setError('Error al cargar la propiedad.');
+      } finally {
         setLoading(false);
       }
     };
@@ -57,6 +61,7 @@ const PropiedadesInfo = () => {
           src={property.img}
           alt={property.Nombre}
           className="w-full h-full object-cover brightness-75"
+          onError={(e) => (e.target.src = '/placeholder-property.jpg')}
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white text-center drop-shadow-lg">
@@ -77,6 +82,7 @@ const PropiedadesInfo = () => {
                 onClick={() => openModal(index)}
                 className="w-full h-52 object-cover rounded-xl cursor-pointer hover:scale-[1.02] transition duration-200 shadow-sm"
                 alt={`Imagen ${index + 1}`}
+                onError={(e) => (e.target.src = '/placeholder-property.jpg')}
               />
             ))}
           </div>
@@ -127,7 +133,7 @@ const PropiedadesInfo = () => {
           </>
         )}
 
-        {/* Ubicación con link a Maps */}
+        {/* Ubicación */}
         <div className="text-center">
           <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
             Ubicación
@@ -148,6 +154,7 @@ const PropiedadesInfo = () => {
 
         <hr className="border-gray-200" />
 
+        {/* Características */}
         <div className="text-center">
           <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
             Características
@@ -157,9 +164,16 @@ const PropiedadesInfo = () => {
           </p>
         </div>
 
+        {/* Botones */}
         <div className="flex justify-center gap-4 pt-3">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              try {
+                navigate(-1);
+              } catch (err) {
+                window.location.href = '/';
+              }
+            }}
             className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
           >
             ← Volver
