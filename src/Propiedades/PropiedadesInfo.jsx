@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
 
 const PropiedadesInfo = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Ej: "P-001"
   const navigate = useNavigate();
 
   const [property, setProperty] = useState(null);
@@ -17,23 +17,26 @@ const PropiedadesInfo = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'propiedades'));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        const found = data.find((p) => p.id === id || p.codigo === id);
-        if (!found) {
+        // 1️⃣ Buscamos por el campo "codigo" (ej: P-001)
+        const q = query(collection(db, 'propiedades'), where('codigo', '==', id));
+        const querySnapshot = await getDocs(q);
+
+        // 2️⃣ Si no encuentra nada, mostramos error
+        if (querySnapshot.empty) {
           setError('Propiedad no encontrada.');
         } else {
-          setProperty(found);
+          // 3️⃣ Tomamos el primer resultado
+          const doc = querySnapshot.docs[0];
+          setProperty({ id: doc.id, ...doc.data() });
         }
-      } catch (error) {
+      } catch (err) {
+        console.error(err);
         setError('Error al cargar la propiedad.');
       } finally {
         setLoading(false);
       }
     };
+
     fetchProperty();
   }, [id]);
 
@@ -120,7 +123,6 @@ const PropiedadesInfo = () => {
 
       {/* Información */}
       <section className="max-w-xl mx-auto mt-14 bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-6">
-        {/* Precio */}
         {property.precio && (
           <>
             <div className="text-center">
@@ -133,7 +135,6 @@ const PropiedadesInfo = () => {
           </>
         )}
 
-        {/* Ubicación */}
         <div className="text-center">
           <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
             Ubicación
@@ -154,7 +155,6 @@ const PropiedadesInfo = () => {
 
         <hr className="border-gray-200" />
 
-        {/* Características */}
         <div className="text-center">
           <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
             Características
@@ -164,16 +164,9 @@ const PropiedadesInfo = () => {
           </p>
         </div>
 
-        {/* Botones */}
         <div className="flex justify-center gap-4 pt-3">
           <button
-            onClick={() => {
-              try {
-                navigate(-1);
-              } catch (err) {
-                window.location.href = '/';
-              }
-            }}
+            onClick={() => navigate(-1)}
             className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
           >
             ← Volver
