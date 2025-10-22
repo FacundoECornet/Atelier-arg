@@ -22,7 +22,7 @@ const PropiedadesInfo = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        const found = data.find((p) => p.id === id);
+        const found = data.find((p) => p.id === id || p.codigo === id);
         if (!found) {
           setError('Propiedad no encontrada.');
         } else {
