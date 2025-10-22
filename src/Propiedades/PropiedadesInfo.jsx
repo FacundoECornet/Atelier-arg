@@ -1,98 +1,195 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { db } from '../firebase/config';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../Firebase';
 
 const PropiedadesInfo = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        console.log('Buscando propiedad con id:', id);
-
-        // 🔍 Busca por el campo "id" que usás en Firestore
-        const q = query(collection(db, 'propiedades'), where('id', '==', id));
-        const querySnapshot = await getDocs(q);
-
-        console.log('Cantidad de resultados:', querySnapshot.size);
-
-        if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0];
-          console.log('Propiedad encontrada:', doc.data());
-          setProperty({ docId: doc.id, ...doc.data() });
-        } else {
+        const querySnapshot = await getDocs(collection(db, 'propiedades'));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const found = data.find((p) => p.id === id || p.codigo === id);
+        if (!found) {
           setError('Propiedad no encontrada.');
+        } else {
+          setProperty(found);
         }
-      } catch (err) {
-        console.error('Error al cargar la propiedad:', err);
+      } catch (error) {
         setError('Error al cargar la propiedad.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchProperty();
   }, [id]);
 
-  // 🌀 Estado de carga
-  if (loading)
-    return <div className="flex justify-center items-center h-screen">Cargando propiedad...</div>;
+  const openModal = (index) => {
+    setCurrentImgIndex(index);
+    setModalOpen(true);
+  };
 
-  // ⚠️ Si hay error
-  if (error)
-    return <div className="flex justify-center items-center h-screen text-red-500">{error}</div>;
+  const closeModal = () => setModalOpen(false);
 
-  // 🏡 Si se encontró la propiedad
+  const prevImage = () =>
+    setCurrentImgIndex((prev) => (prev === 0 ? property.galeria.length - 1 : prev - 1));
+
+  const nextImage = () =>
+    setCurrentImgIndex((prev) => (prev === property.galeria.length - 1 ? 0 : prev + 1));
+
+  if (loading) return <div className="text-center py-20 text-xl">Cargando...</div>;
+  if (error) return <div className="text-center text-red-500 py-20">{error}</div>;
+
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-8 max-w-6xl mx-auto">
-      {/* 🖼 Imagen principal */}
-      <div className="w-full md:w-1/2 h-[400px] overflow-hidden rounded-2xl shadow-lg">
+    <div className="w-full min-h-screen bg-gray-50">
+      {/* Hero */}
+      <div className="relative w-full h-80 md:h-[450px] overflow-hidden shadow-xl">
         <img
-          src={property.img || property.galeria?.[0]}
+          src={property.img}
           alt={property.Nombre}
           className="w-full h-full object-cover brightness-75"
+          onError={(e) => (e.target.src = '/placeholder-property.jpg')}
         />
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white text-center drop-shadow-lg">
+            {property.Nombre}
+          </h1>
+        </div>
       </div>
 
-      {/* 📝 Detalles */}
-      <div className="flex flex-col justify-center w-full md:w-1/2">
-        <h1 className="text-3xl font-bold mb-3">{property.Nombre}</h1>
-        <p className="text-gray-600 mb-2">{property.ubicacion}</p>
+      {/* Galería */}
+      {property.galeria?.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 mt-12">
+          <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Galería</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {property.galeria.map((url, index) => (
+              <img
+                key={index}
+                src={url}
+                onClick={() => openModal(index)}
+                className="w-full h-52 object-cover rounded-xl cursor-pointer hover:scale-[1.02] transition duration-200 shadow-sm"
+                alt={`Imagen ${index + 1}`}
+                onError={(e) => (e.target.src = '/placeholder-property.jpg')}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
-        {property.ubicURL && (
-          <a
-            href={property.ubicURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline mb-4"
+      {/* Modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center transition-all">
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-6 text-white text-4xl hover:text-red-400 transition"
           >
-            Ver ubicación en Google Maps
-          </a>
-        )}
+            &times;
+          </button>
+          <button
+            onClick={prevImage}
+            className="absolute left-4 text-white text-4xl hover:text-gray-300"
+          >
+            &#8592;
+          </button>
+          <img
+            src={property.galeria[currentImgIndex]}
+            alt="Vista ampliada"
+            className="max-w-[90%] max-h-[90vh] rounded-lg shadow-lg"
+          />
+          <button
+            onClick={nextImage}
+            className="absolute right-4 text-white text-4xl hover:text-gray-300"
+          >
+            &#8594;
+          </button>
+        </div>
+      )}
 
-        <p className="text-gray-800 whitespace-pre-line mb-4">{property.caracteristicas}</p>
-
-        {/* 🖼 Galería de imágenes */}
-        {property.galeria?.length > 1 && (
+      {/* Información */}
+      <section className="max-w-xl mx-auto mt-14 bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-6">
+        {/* Precio */}
+        {property.precio && (
           <>
-            <h2 className="text-xl font-semibold mt-6 mb-2">Galería</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {property.galeria.slice(1).map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`Galería ${index}`}
-                  className="rounded-xl object-cover h-40 w-full shadow-md hover:scale-105 transition-transform"
-                />
-              ))}
+            <div className="text-center">
+              <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                Precio
+              </h3>
+              <p className="text-2xl font-bold text-green-600">{property.precio}</p>
             </div>
+            <hr className="border-gray-200" />
           </>
         )}
-      </div>
+
+        {/* Ubicación */}
+        <div className="text-center">
+          <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+            Ubicación
+          </h3>
+          {property.ubicURL ? (
+            <a
+              href={property.ubicURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg text-blue-600 hover:underline"
+            >
+              {property.ubicacion}
+            </a>
+          ) : (
+            <p className="text-lg text-gray-800">{property.ubicacion}</p>
+          )}
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Características */}
+        <div className="text-center">
+          <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
+            Características
+          </h3>
+          <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
+            {property.caracteristicas}
+          </p>
+        </div>
+
+        {/* Botones */}
+        <div className="flex justify-center gap-4 pt-3">
+          <button
+            onClick={() => {
+              try {
+                navigate(-1);
+              } catch (err) {
+                window.location.href = '/';
+              }
+            }}
+            className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
+          >
+            ← Volver
+          </button>
+          <button
+            onClick={() => {
+              const mensaje = `Hola, buen día. Me interesa la propiedad "${property.Nombre}". ¿Podrían darme más información, por favor?`;
+              const url = `https://wa.me/5493812105720?text=${encodeURIComponent(mensaje)}`;
+              window.open(url, '_blank');
+            }}
+            className="bg-black text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
+          >
+            Consultar Propiedad
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
