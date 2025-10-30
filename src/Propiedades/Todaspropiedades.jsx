@@ -239,6 +239,9 @@ const AllProperties = () => {
                       <span className="truncate">{formattedPrice}</span>
                     </div>
                   )}
+                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-black/90 backdrop-blur-sm text-white text-sm font-semibold border border-white/20 max-w-fit">
+                    {property.estado || 'Venta'}
+                  </div>
                 </div>
               </div>
               <div className="p-6">
