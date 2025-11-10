@@ -127,7 +127,7 @@ const AllProperties = () => {
         return `$${numPrice.toLocaleString('es-AR')} ARS`;
       }
       // Si es un número más pequeño, podría ser en USD
-      return `$${numPrice.toLocaleString('es-AR')} USD`;
+      return `US$${numPrice.toLocaleString('es-AR')}`;
     }
 
     return priceStr;

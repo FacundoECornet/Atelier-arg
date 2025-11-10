@@ -127,7 +127,7 @@ const PropiedadesInfo = () => {
               <h3 className="text-md font-semibold text-gray-700 uppercase tracking-wider mb-1">
                 Precio
               </h3>
-              <p className="text-2xl font-bold text-green-600">${property.precio}USD</p>
+              <p className="text-2xl font-bold text-green-600">US${property.precio}</p>
             </div>
             <hr className="border-gray-200" />
           </>
