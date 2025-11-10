@@ -47,6 +47,7 @@ const AllProperties = () => {
       'yerba buena',
       'concepción',
       'santa ana',
+      'tafí viejo',
     ];
     const buenosAiresLocalidades = [
       'buenos aires',
