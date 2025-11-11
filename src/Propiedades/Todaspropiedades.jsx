@@ -123,7 +123,7 @@ const AllProperties = () => {
     const numPrice = parseFloat(priceStr.replace(/[^\d.]/g, ''));
     if (!isNaN(numPrice)) {
       // Si es un número muy grande, asumir que es en pesos
-      if (numPrice > 1000000) {
+      if (numPrice > 10000000) {
         return `$${numPrice.toLocaleString('es-AR')} ARS`;
       }
       // Si es un número más pequeño, podría ser en USD

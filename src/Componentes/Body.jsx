@@ -20,6 +20,46 @@ const Body = () => {
     document.getElementById('property-list')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Función para manejar clicks en navegación
+  const handleClick = (item) => (e) => {
+    e.preventDefault();
+
+    // Si es de tipo navigate (como Propiedades)
+    if (item.type === 'navigate') {
+      navigate(item.to);
+      return;
+    }
+
+    // Si es "Inicio", navegamos a "/"
+    if (item.to === '/') {
+      if (location.pathname !== '/') {
+        navigate('/');
+      }
+      return;
+    }
+
+    // Para anclas con # (tipo scroll)
+    if (item.to.startsWith('#')) {
+      // Si estamos en la página principal, scroll manual a la sección
+      if (location.pathname === '/') {
+        const id = item.to.substring(1); // quitar #
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // Si no estamos en la página principal, navegamos a "/" y luego hacemos scroll
+        navigate('/');
+        setTimeout(() => {
+          const el = document.getElementById(item.to.substring(1));
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    }
+  };
+
   return (
     <>
       <OficinasCarousel />
@@ -61,10 +101,12 @@ const Body = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href="#contacto"
+                    onClick={handleClick({ to: '#contacto', type: 'scroll' })}
                     className="border-2 border-black text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:bg-black hover:text-white text-center"
                   >
-                    Póngase en contacto
+                    Pongase en contacto
                   </a>
+
                   <button
                     onClick={handleVenderClick}
                     className="bg-black text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:bg-black border-2 border-black"
