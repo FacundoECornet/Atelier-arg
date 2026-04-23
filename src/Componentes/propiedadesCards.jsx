@@ -1,33 +1,12 @@
-import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../Firebase';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePropiedades } from '../hooks/usePropiedades';
 
 const PropertyList = () => {
-  const [properties, setProperties] = useState([]);
+  const { propiedades: properties } = usePropiedades();
   const [visibleCount, setVisibleCount] = useState(3);
   const navigate = useNavigate();
   const initialCount = 3;
-  console.log('📦 Renderizando PropertyList');
-
-  useEffect(() => {
-    console.log('🚀 Ejecutando useEffect: Fetch de propiedades');
-
-    const fetchProperties = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'propiedades'));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProperties(data);
-      } catch (error) {
-        console.error('Error cargando propiedades:', error);
-      }
-    };
-
-    fetchProperties();
-  }, []);
 
   const handleToggleProperties = () => {
     if (visibleCount < properties.length) {
@@ -74,6 +53,7 @@ const PropertyList = () => {
                     alt={property.Nombre || 'Imagen propiedad'}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
                     <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-black text-sm font-medium border border-gray-200">
@@ -120,7 +100,7 @@ const PropertyList = () => {
       {properties.length > initialCount && (
         <div className="mt-12 text-center">
           <button
-            onClick={() => navigate('/propiedades')} // Redirige a la página con todas las propiedades
+            onClick={() => navigate('/propiedades')}
             className="inline-flex items-center space-x-2 px-8 py-3 bg-white text-black border-2 border-black rounded-xl font-semibold hover:bg-black hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <span>Ver Más Propiedades</span>

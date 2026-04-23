@@ -2,6 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import { Map, Marker } from 'pigeon-maps';
 
+const getNearbyCoords = (lat, lon, meters) => {
+  const offset = meters * 0.000009;
+  return [
+    [lat + offset, lon],
+    [lat - offset, lon],
+    [lat, lon + offset],
+    [lat, lon - offset],
+  ];
+};
+
 const ModalTasacion = ({ showModal, handleCloseModal }) => {
   const [step, setStep] = useState(1);
   const [loadingGeo, setLoadingGeo] = useState(false);
@@ -72,16 +82,6 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
   // ======================
   // Reverse geocode + mapa
   // ======================
-  const getNearbyCoords = (lat, lon, meters) => {
-    const offset = meters * 0.000009;
-    return [
-      [lat + offset, lon],
-      [lat - offset, lon],
-      [lat, lon + offset],
-      [lat, lon - offset],
-    ];
-  };
-
   const reverseGeocodeWithNearby = async (lat, lon) => {
     setLoadingGeo(true);
 

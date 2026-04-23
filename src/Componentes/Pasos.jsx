@@ -8,75 +8,75 @@ import mark from '../Imagenes/mark.webp';
 import visita from '../Imagenes/visita (1).webp';
 import informe from '../Imagenes/informe.webp';
 
+const pasos = [
+  {
+    id: 'consulta',
+    icon: '🏛️',
+    title: 'Consulta',
+    content:
+      'Vender una vivienda con éxito significa encontrar rápidamente al comprador adecuado y conseguir el precio de venta óptimo...',
+    imageSrc: consulta,
+  },
+  {
+    id: 'valoracion',
+    icon: '⚖️',
+    title: 'Valoración',
+    content:
+      'Valoramos su propiedad utilizando análisis de mercado precisos y nuestra amplia experiencia en el sector...',
+    imageSrc: valor,
+  },
+  {
+    id: 'exposicion',
+    icon: '📋',
+    title: 'Exposición',
+    content:
+      'Preparamos documentación profesional y fotografías de alta calidad para mostrar su propiedad...',
+    imageSrc: casa,
+  },
+  {
+    id: 'marketing',
+    icon: '📢',
+    title: 'Marketing',
+    content:
+      'Implementamos estrategias de marketing personalizadas utilizando plataformas digitales...',
+    imageSrc: mark,
+  },
+  {
+    id: 'visitas',
+    icon: '🔑',
+    title: 'Visitas',
+    content:
+      'Organizamos y guiamos visitas con compradores preseleccionados, asegurándonos de presentar su propiedad...',
+    imageSrc: visita,
+  },
+  {
+    id: 'informes',
+    icon: '📈',
+    title: 'Informes',
+    content:
+      'Le proporcionamos informes detallados sobre el interés generado, feedback de las visitas...',
+    imageSrc: informe,
+  },
+  {
+    id: 'contrato',
+    icon: '✒️',
+    title: 'Contrato',
+    content:
+      'Gestionamos todas las negociaciones y trámites legales necesarios para asegurar un contrato seguro...',
+    imageSrc: contrato,
+  },
+  {
+    id: 'servicio',
+    icon: '🤲',
+    title: 'Post-venta',
+    content:
+      'Nuestro compromiso no termina con la venta. Seguimos a su disposición para cualquier consulta posterior...',
+    imageSrc: post,
+  },
+];
+
 export default function Pasos() {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const pasos = [
-    {
-      id: 'consulta',
-      icon: '🏛️',
-      title: 'Consulta',
-      content:
-        'Vender una vivienda con éxito significa encontrar rápidamente al comprador adecuado y conseguir el precio de venta óptimo...',
-      imageSrc: consulta,
-    },
-    {
-      id: 'valoracion',
-      icon: '⚖️',
-      title: 'Valoración',
-      content:
-        'Valoramos su propiedad utilizando análisis de mercado precisos y nuestra amplia experiencia en el sector...',
-      imageSrc: valor,
-    },
-    {
-      id: 'exposicion',
-      icon: '📋',
-      title: 'Exposición',
-      content:
-        'Preparamos documentación profesional y fotografías de alta calidad para mostrar su propiedad...',
-      imageSrc: casa,
-    },
-    {
-      id: 'marketing',
-      icon: '📢',
-      title: 'Marketing',
-      content:
-        'Implementamos estrategias de marketing personalizadas utilizando plataformas digitales...',
-      imageSrc: mark,
-    },
-    {
-      id: 'visitas',
-      icon: '🔑',
-      title: 'Visitas',
-      content:
-        'Organizamos y guiamos visitas con compradores preseleccionados, asegurándonos de presentar su propiedad...',
-      imageSrc: visita,
-    },
-    {
-      id: 'informes',
-      icon: '📈',
-      title: 'Informes',
-      content:
-        'Le proporcionamos informes detallados sobre el interés generado, feedback de las visitas...',
-      imageSrc: informe,
-    },
-    {
-      id: 'contrato',
-      icon: '✒️',
-      title: 'Contrato',
-      content:
-        'Gestionamos todas las negociaciones y trámites legales necesarios para asegurar un contrato seguro...',
-      imageSrc: contrato,
-    },
-    {
-      id: 'servicio',
-      icon: '🤲',
-      title: 'Post-venta',
-      content:
-        'Nuestro compromiso no termina con la venta. Seguimos a su disposición para cualquier consulta posterior...',
-      imageSrc: post,
-    },
-  ];
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % pasos.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pasos.length) % pasos.length);
@@ -97,10 +97,8 @@ export default function Pasos() {
 
       {/* Timeline optimizado para móvil */}
       <div className="relative mb-6 sm:mb-8">
-        {/* Línea de fondo - oculta en móvil muy pequeño */}
         <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0 mx-6 rounded-full"></div>
 
-        {/* Contenedor scrolleable horizontal */}
         <div className="overflow-x-auto overflow-y-hidden scrollbar-none">
           <div className="flex justify-start sm:justify-center items-center space-x-2 sm:space-x-4 md:space-x-6 relative z-10 px-4 pb-2 min-w-max sm:min-w-0">
             {pasos.map((p, i) => {
@@ -143,9 +141,9 @@ export default function Pasos() {
               src={paso.imageSrc}
               alt={paso.title}
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-              onError={(e) => {
-                e.target.src = '/api/placeholder/600/400';
-              }}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => { e.target.src = '/api/placeholder/600/400'; }}
             />
           </div>
 
@@ -179,7 +177,6 @@ export default function Pasos() {
             <span className="text-sm sm:text-base text-gray-600 font-medium">
               {activeIndex + 1} de {pasos.length}
             </span>
-            {/* Indicadores de progreso en móvil */}
             <div className="flex space-x-1 sm:hidden">
               {pasos.map((_, i) => (
                 <div

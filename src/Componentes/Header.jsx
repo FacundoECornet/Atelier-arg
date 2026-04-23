@@ -1,7 +1,10 @@
 import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+const LOGO_URL =
+  'https://static.wixstatic.com/media/00602b_71e63b15dcb64d87af750db73320d966~mv2.png/v1/fill/w_288,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20atelier%20horizontal-02.png';
 
 const navigation = [
   { name: 'Propiedades', to: '/propiedades', type: 'navigate' },
@@ -17,68 +20,46 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Función para ir al inicio
   const handleLogoClick = (e) => {
     e.preventDefault();
     if (location.pathname !== '/') {
       navigate('/');
     } else {
-      // Si ya estamos en la home, scroll al top
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // Función para manejar clicks en navegación
   const handleClick = (item) => (e) => {
     e.preventDefault();
 
-    // Si es de tipo navigate (como Propiedades)
     if (item.type === 'navigate') {
       navigate(item.to);
       return;
     }
 
-    // Si es "Inicio", navegamos a "/"
     if (item.to === '/') {
-      if (location.pathname !== '/') {
-        navigate('/');
-      }
+      if (location.pathname !== '/') navigate('/');
       return;
     }
 
-    // Para anclas con # (tipo scroll)
     if (item.to.startsWith('#')) {
-      // Si estamos en la página principal, scroll manual a la sección
       if (location.pathname === '/') {
-        const id = item.to.substring(1); // quitar #
-        const el = document.getElementById(id);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
+        const el = document.getElementById(item.to.substring(1));
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       } else {
-        // Si no estamos en la página principal, navegamos a "/" y luego hacemos scroll
         navigate('/');
         setTimeout(() => {
           const el = document.getElementById(item.to.substring(1));
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-          }
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 100);
       }
     }
   };
 
-  // Función para determinar si el link está activo
   const isActive = (item) => {
-    if (item.type === 'navigate') {
-      return location.pathname === item.to;
-    }
-    if (item.to === '/') {
-      return location.pathname === '/';
-    }
-    if (item.to.startsWith('#')) {
-      return location.pathname === '/' && location.hash === item.to;
-    }
+    if (item.type === 'navigate') return location.pathname === item.to;
+    if (item.to === '/') return location.pathname === '/';
+    if (item.to.startsWith('#')) return location.pathname === '/' && location.hash === item.to;
     return false;
   };
 
@@ -90,24 +71,14 @@ export default function Navbar() {
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" id="inicio">
-            {/* Desktop Layout */}
+            {/* Desktop */}
             <div className="hidden sm:flex h-20 items-center justify-between">
-              {/* Logo */}
               <div className="flex-shrink-0">
-                <a
-                  href="/"
-                  onClick={handleLogoClick}
-                  className="cursor-pointer hover:opacity-80 transition-opacity"
-                >
-                  <img
-                    src="https://static.wixstatic.com/media/00602b_71e63b15dcb64d87af750db73320d966~mv2.png/v1/fill/w_288,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20atelier%20horizontal-02.png"
-                    alt="Logo Atelier"
-                    className="h-16 w-auto"
-                  />
+                <a href="/" onClick={handleLogoClick} className="cursor-pointer hover:opacity-80 transition-opacity">
+                  <img src={LOGO_URL} alt="Logo Atelier" className="h-16 w-auto" decoding="async" />
                 </a>
               </div>
 
-              {/* Navegación centrada */}
               <div className="flex-1 flex justify-center">
                 <div className="flex space-x-8">
                   {navigation.map((item) => (
@@ -128,7 +99,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Botón contacto */}
               <div className="flex-shrink-0">
                 <a
                   href="#contacto"
@@ -140,24 +110,14 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Mobile Layout */}
+            {/* Mobile */}
             <div className="sm:hidden flex h-16 items-center justify-between">
-              {/* Logo móvil */}
               <div className="flex items-center justify-start">
-                <a
-                  href="/"
-                  onClick={handleLogoClick}
-                  className="cursor-pointer hover:opacity-80 transition-opacity"
-                >
-                  <img
-                    src="https://static.wixstatic.com/media/00602b_71e63b15dcb64d87af750db73320d966~mv2.png/v1/fill/w_288,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20atelier%20horizontal-02.png"
-                    alt="Logo Atelier"
-                    className="h-12 w-auto"
-                  />
+                <a href="/" onClick={handleLogoClick} className="cursor-pointer hover:opacity-80 transition-opacity">
+                  <img src={LOGO_URL} alt="Logo Atelier" className="h-12 w-auto" decoding="async" />
                 </a>
               </div>
 
-              {/* Botón menú móvil */}
               <div className="sm:hidden">
                 <Disclosure.Button className="text-gray-600 hover:text-black hover:bg-gray-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black transition-colors">
                   {open ? (
@@ -170,7 +130,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Menú móvil desplegable */}
           <Disclosure.Panel className="sm:hidden bg-white border-t border-gray-200">
             <div className="px-4 pt-4 pb-6 space-y-2">
               {navigation.map((item) => (

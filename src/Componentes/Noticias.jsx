@@ -3,25 +3,20 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
 
-const getNoticias = () => {
+const Noticias = () => {
   const [noticias, setNoticias] = useState([]);
 
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'Noticias'));
-        const noticiasData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        console.log('Noticias cargadas:', noticiasData);
-        setNoticias(noticiasData);
-      } catch (error) {
-        console.error('Error cargando noticias:', error);
+        setNoticias(
+          querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        );
+      } catch {
+        // silencioso — sin datos simplemente no muestra la sección
       }
     };
-
     fetchNoticias();
   }, []);
 
@@ -44,6 +39,7 @@ const getNoticias = () => {
                   alt={noticia.titulo}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 rounded-lg"></div>
               </div>
@@ -79,4 +75,5 @@ const getNoticias = () => {
     </div>
   );
 };
-export default getNoticias;
+
+export default Noticias;

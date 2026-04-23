@@ -1,43 +1,17 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../Firebase';
 import { useNavigate } from 'react-router-dom';
+import { usePropiedades } from '../hooks/usePropiedades';
+import { formatPrice } from '../utils/formatPrice';
+import { handleImgFallback } from '../utils/imgFallback';
+
+const PLACEHOLDER = '/placeholder-property.jpg';
 
 const AllProperties = () => {
-  const [properties, setProperties] = useState([]);
+  const { propiedades, loading, error } = usePropiedades();
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('Tucumán');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const querySnapshot = await getDocs(collection(db, 'propiedades'));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProperties(data);
-        // Por defecto mostramos propiedades de Tucumán
-        setFilteredProperties(
-          data.filter((property) => getProvince(property.ubicacion) === 'Tucumán'),
-        );
-      } catch (error) {
-        console.error('Error cargando propiedades:', error);
-        setError('Error al cargar las propiedades. Por favor, intenta nuevamente.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProperties();
-  }, []);
-
-  // Clasifica la ubicación en Tucumán, Buenos Aires o Otra
   const getProvince = (ubicacion) => {
     if (!ubicacion) return 'Otra';
     const lower = ubicacion.toLowerCase();
@@ -101,56 +75,29 @@ const AllProperties = () => {
       'monserrat',
       'barracas',
     ];
-
     if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán';
     if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires';
     return 'Otra';
   };
 
-  // Función para formatear el precio de manera consistente
-  const formatPrice = (price) => {
-    if (!price) return null;
-
-    // Convertir a string y limpiar
-    let priceStr = String(price).trim();
-
-    // Si ya tiene formato de moneda, devolverlo tal como está
-    if (priceStr.includes('$') || priceStr.includes('USD') || priceStr.includes('ARS')) {
-      return priceStr;
-    }
-
-    // Si es solo un número, formatear
-    const numPrice = parseFloat(priceStr.replace(/[^\d.]/g, ''));
-    if (!isNaN(numPrice)) {
-      // Si es un número muy grande, asumir que es en pesos
-      if (numPrice > 10000000) {
-        return `$${numPrice.toLocaleString('es-AR')} ARS`;
-      }
-      // Si es un número más pequeño, podría ser en USD
-      return `US$${numPrice.toLocaleString('es-AR')}`;
-    }
-
-    return priceStr;
-  };
+  useEffect(() => {
+    setFilteredProperties(
+      propiedades.filter((p) => getProvince(p.ubicacion) === selectedLocation),
+    );
+  }, [propiedades, selectedLocation]);
 
   const filterByLocation = (location) => {
     setSelectedLocation(location);
-    setFilteredProperties(
-      properties.filter((property) => getProvince(property.ubicacion) === location),
-    );
   };
 
   const handlePropertyClick = (propertyId) => {
     try {
       navigate(`/propiedades/${propertyId}`);
-    } catch (error) {
-      console.error('Error navegando a la propiedad:', error);
-      // Fallback: recargar la página con la nueva URL
+    } catch {
       window.location.href = `/propiedades/${propertyId}`;
     }
   };
 
-  // Estados de carga y error
   if (loading) {
     return (
       <div className="px-4 sm:px-6 lg:px-8 pt-32 pb-12 max-w-7xl mx-auto">
@@ -201,7 +148,6 @@ const AllProperties = () => {
         ))}
       </div>
 
-      {/* Mensaje si no hay propiedades */}
       {filteredProperties.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-600 text-lg">
@@ -210,11 +156,9 @@ const AllProperties = () => {
         </div>
       )}
 
-      {/* Listado de propiedades */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProperties.map((property) => {
           const formattedPrice = formatPrice(property.precio);
-
           return (
             <div
               key={property.id}
@@ -227,9 +171,9 @@ const AllProperties = () => {
                   src={property.img}
                   alt={property.Nombre || 'Imagen propiedad'}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.src = '/placeholder-property.jpg'; // Imagen de fallback
-                  }}
+                  loading="lazy"
+                  decoding="async"
+                  onError={handleImgFallback(PLACEHOLDER)}
                 />
                 <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
                   <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-black text-sm font-medium border border-gray-200">

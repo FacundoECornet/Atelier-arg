@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
+import { handleImgFallback } from '../utils/imgFallback';
+
+const PLACEHOLDER = '/placeholder-property.jpg';
 
 const PropiedadesInfo = () => {
   const { id } = useParams();
@@ -17,18 +20,22 @@ const PropiedadesInfo = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'propiedades'));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        const found = data.find((p) => p.id === id || p.codigo === id);
-        if (!found) {
-          setError('Propiedad no encontrada.');
-        } else {
-          setProperty(found);
+        // Try direct doc lookup first (fastest path)
+        const snap = await getDoc(doc(db, 'propiedades', id));
+        if (snap.exists()) {
+          setProperty({ id: snap.id, ...snap.data() });
+          return;
         }
-      } catch (error) {
+        // Fallback: lookup by codigo field
+        const q = query(collection(db, 'propiedades'), where('codigo', '==', id));
+        const qSnap = await getDocs(q);
+        if (!qSnap.empty) {
+          const d = qSnap.docs[0];
+          setProperty({ id: d.id, ...d.data() });
+        } else {
+          setError('Propiedad no encontrada.');
+        }
+      } catch {
         setError('Error al cargar la propiedad.');
       } finally {
         setLoading(false);
@@ -61,7 +68,7 @@ const PropiedadesInfo = () => {
           src={property.img}
           alt={property.Nombre}
           className="w-full h-full object-cover brightness-75"
-          onError={(e) => (e.target.src = '/placeholder-property.jpg')}
+          onError={handleImgFallback(PLACEHOLDER)}
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white text-center drop-shadow-lg">
@@ -82,7 +89,9 @@ const PropiedadesInfo = () => {
                 onClick={() => openModal(index)}
                 className="w-full h-52 object-cover rounded-xl cursor-pointer hover:scale-[1.02] transition duration-200 shadow-sm"
                 alt={`Imagen ${index + 1}`}
-                onError={(e) => (e.target.src = '/placeholder-property.jpg')}
+                loading="lazy"
+                decoding="async"
+                onError={handleImgFallback(PLACEHOLDER)}
               />
             ))}
           </div>
@@ -170,7 +179,7 @@ const PropiedadesInfo = () => {
             onClick={() => {
               try {
                 navigate(-1);
-              } catch (err) {
+              } catch {
                 window.location.href = '/';
               }
             }}

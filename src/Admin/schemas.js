@@ -1,0 +1,43 @@
+export const schemas = {
+  propiedades: {
+    collection: 'propiedades',
+    label: 'Propiedades',
+    basePath: '/admin/propiedades',
+    listColumns: ['Nombre', 'codigo', 'estado'],
+    fields: [
+      { key: 'Nombre',         label: 'Nombre',          type: 'text',     required: true },
+      { key: 'codigo',         label: 'Código',          type: 'text',     required: false },
+      { key: 'ubicacion',      label: 'Ubicación',       type: 'text',     required: false },
+      { key: 'ubicURL',        label: 'URL Ubicación',   type: 'url',      required: false },
+      { key: 'precio',         label: 'Precio',          type: 'text',     required: false },
+      { key: 'estado',         label: 'Estado',          type: 'text',     required: false },
+      { key: 'caracteristicas',label: 'Características', type: 'textarea', required: false },
+      { key: 'img',            label: 'Imagen principal (URL)', type: 'url', required: false },
+      { key: 'galeria',        label: 'Galería (URLs)',  type: 'arrayUrl', required: false },
+    ],
+  },
+  noticias: {
+    collection: 'Noticias',
+    label: 'Noticias',
+    basePath: '/admin/noticias',
+    listColumns: ['titulo'],
+    fields: [
+      { key: 'titulo',      label: 'Título',      type: 'text',     required: true },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: false },
+      { key: 'img',         label: 'Imagen (URL)', type: 'url',     required: false },
+      { key: 'url',         label: 'Link externo', type: 'url',     required: false },
+    ],
+  },
+  nosotros: {
+    collection: 'Nosotros',
+    label: 'Equipo',
+    basePath: '/admin/nosotros',
+    listColumns: ['nombre', 'cargo'],
+    fields: [
+      { key: 'nombre',      label: 'Nombre',      type: 'text',     required: true },
+      { key: 'cargo',       label: 'Cargo',        type: 'text',     required: false },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: false },
+      { key: 'img',         label: 'Foto (URL)',   type: 'url',      required: false },
+    ],
+  },
+};
