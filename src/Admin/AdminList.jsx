@@ -1,90 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-  arrayMove,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { listAll, listAllOrdered, remove, bulkUpdateOrden } from './firestoreApi';
+import { listAll, listAllOrdered, remove } from './firestoreApi';
 import { hideImgOnError } from '../utils/imgFallback';
 
-function SortableItem({ item, schema, onDelete }) {
-  const navigate = useNavigate();
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: item.id });
+const tucumanLocalidades = [
+  'san miguel de tucuman',
+  'tucumán',
+  'yerba buena',
+  'concepción',
+  'santa ana',
+  'tafi viejo',
+];
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
+const buenosAiresLocalidades = [
+  'buenos aires', 'la plata', 'mar del plata', 'quilmes', 'lomas de zamora',
+  'belgrano', 'palermo', 'recoleta', 'caballito', 'san isidro', 'avellaneda',
+  'lanús', 'morón', 'san justo', 'haedo', 'castelar', 'merlo', 'temperley',
+  'burzaco', 'adrogue', 'banfield', 'olivos', 'vicente lopez', 'tigre',
+  'san fernando', 'pilar', 'escobar', 'zarate', 'campana', 'lujan',
+  'carmen de areco', 'saladillo', 'chivilcoy', 'velez sarsfield', 'flores',
+  'parque patricios', 'villa crespo', 'boedo', 'almagro', 'villa urquiza',
+  'nuñez', 'palermo hollywood', 'palermo viejo', 'retiro', 'constitución',
+  'san telmo', 'monserrat', 'barracas',
+];
 
-  const primaryField = schema.listColumns[0];
-  const label = item[primaryField] || item.id;
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="bg-white rounded-2xl shadow-xl p-4 flex items-center justify-between gap-4"
-    >
-      <div className="flex items-center gap-4 min-w-0 flex-1">
-        <button
-          {...attributes}
-          {...listeners}
-          className="text-gray-300 hover:text-gray-500 cursor-grab active:cursor-grabbing shrink-0 touch-none px-1"
-          title="Arrastrar para reordenar"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <circle cx="5" cy="4" r="1.5" />
-            <circle cx="11" cy="4" r="1.5" />
-            <circle cx="5" cy="8" r="1.5" />
-            <circle cx="11" cy="8" r="1.5" />
-            <circle cx="5" cy="12" r="1.5" />
-            <circle cx="11" cy="12" r="1.5" />
-          </svg>
-        </button>
-        {item.img && (
-          <img
-            src={item.img}
-            alt=""
-            className="w-14 h-14 object-cover rounded-xl border border-gray-100 shrink-0"
-            onError={hideImgOnError}
-          />
-        )}
-        <div className="min-w-0">
-          <p className="font-semibold text-gray-900 truncate">{label || '(sin título)'}</p>
-          <p className="text-xs text-gray-400 truncate">
-            {schema.listColumns.slice(1).map((col) => item[col]).filter(Boolean).join(' · ')}
-          </p>
-        </div>
-      </div>
-      <div className="flex gap-2 shrink-0">
-        <button
-          onClick={() => navigate(`${schema.basePath}/${item.id}/editar`)}
-          className="border border-gray-300 text-gray-700 rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-gray-50 transition-colors"
-        >
-          Editar
-        </button>
-        <button
-          onClick={() => onDelete(item.id, label)}
-          className="bg-red-600 text-white rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-red-700 transition-colors"
-        >
-          Eliminar
-        </button>
-      </div>
-    </div>
-  );
+function getProvince(ubicacion) {
+  if (!ubicacion) return 'Otra';
+  const lower = ubicacion.toLowerCase();
+  if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán';
+  if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires';
+  return 'Otra';
 }
 
 export default function AdminList({ schema }) {
@@ -92,9 +38,9 @@ export default function AdminList({ schema }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [selectedProvince, setSelectedProvince] = useState(null);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const isPropiedades = schema.collection === 'propiedades';
 
   async function load() {
     setLoading(true);
@@ -133,34 +79,13 @@ export default function AdminList({ schema }) {
     }
   }
 
-  async function handleDragEnd(event) {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-
-    const oldIndex = items.findIndex((i) => i.id === active.id);
-    const newIndex = items.findIndex((i) => i.id === over.id);
-    const reordered = arrayMove(items, oldIndex, newIndex);
-    setItems(reordered);
-
-    setSaving(true);
-    try {
-      // Primer elemento = mayor orden (orden DESC = primer item visible)
-      const total = reordered.length;
-      const updates = reordered.map((item, idx) => ({
-        id: item.id,
-        orden: total - idx,
-      }));
-      await bulkUpdateOrden(schema.collection, updates);
-      Swal.fire({ title: 'Orden guardado', icon: 'success', timer: 1200, showConfirmButton: false });
-    } catch {
-      Swal.fire({ title: 'Error al guardar el orden', icon: 'error' });
-      load();
-    } finally {
-      setSaving(false);
-    }
-  }
-
   const primaryField = schema.listColumns[0];
+
+  const provinces = isPropiedades ? ['Tucumán', 'Buenos Aires', 'Otra'] : [];
+
+  const visibleItems = isPropiedades && selectedProvince
+    ? items.filter((i) => getProvince(i.ubicacion) === selectedProvince)
+    : items;
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -168,22 +93,45 @@ export default function AdminList({ schema }) {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{schema.label}</h1>
           <p className="text-sm text-gray-500">
-            {items.length} {items.length === 1 ? 'registro' : 'registros'}
-            {schema.sortable && (
-              <span className="ml-2 text-gray-400">· arrastrá para reordenar</span>
-            )}
+            {visibleItems.length} {visibleItems.length === 1 ? 'registro' : 'registros'}
+            {isPropiedades && selectedProvince && ` en ${selectedProvince}`}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {saving && <span className="text-xs text-gray-400">Guardando orden…</span>}
-          <Link
-            to={`${schema.basePath}/nuevo`}
-            className="bg-black text-white rounded-xl px-5 py-2 font-semibold hover:opacity-80 transition-opacity"
-          >
-            + Nuevo
-          </Link>
-        </div>
+        <Link
+          to={`${schema.basePath}/nuevo`}
+          className="bg-black text-white rounded-xl px-5 py-2 font-semibold hover:opacity-80 transition-opacity"
+        >
+          + Nuevo
+        </Link>
       </div>
+
+      {isPropiedades && (
+        <div className="flex gap-2 mb-5">
+          <button
+            onClick={() => setSelectedProvince(null)}
+            className={`px-4 py-1.5 rounded-xl text-sm font-semibold border transition-colors ${
+              selectedProvince === null
+                ? 'bg-black text-white border-black'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Todas
+          </button>
+          {provinces.map((p) => (
+            <button
+              key={p}
+              onClick={() => setSelectedProvince(p)}
+              className={`px-4 py-1.5 rounded-xl text-sm font-semibold border transition-colors ${
+                selectedProvince === p
+                  ? 'bg-black text-white border-black'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
 
       {loading && <div className="text-center py-16 text-gray-400">Cargando…</div>}
 
@@ -194,32 +142,18 @@ export default function AdminList({ schema }) {
         </div>
       )}
 
-      {!loading && !error && items.length === 0 && (
+      {!loading && !error && visibleItems.length === 0 && (
         <div className="text-center py-16 text-gray-400">
-          No hay registros. <Link to={`${schema.basePath}/nuevo`} className="underline">Crear el primero.</Link>
+          No hay registros.{' '}
+          {!selectedProvince && (
+            <Link to={`${schema.basePath}/nuevo`} className="underline">Crear el primero.</Link>
+          )}
         </div>
       )}
 
-      {!loading && items.length > 0 && schema.sortable && (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-            <div className="flex flex-col gap-3">
-              {items.map((item) => (
-                <SortableItem
-                  key={item.id}
-                  item={item}
-                  schema={schema}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
-      )}
-
-      {!loading && items.length > 0 && !schema.sortable && (
+      {!loading && visibleItems.length > 0 && (
         <div className="flex flex-col gap-3">
-          {items.map((item) => {
+          {visibleItems.map((item) => {
             const label = item[primaryField] || item.id;
             return (
               <div
