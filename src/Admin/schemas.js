@@ -4,6 +4,8 @@ export const schemas = {
     label: 'Propiedades',
     basePath: '/admin/propiedades',
     listColumns: ['Nombre', 'codigo', 'estado'],
+    sortable: true,
+    autoOrder: true,
     fields: [
       { key: 'Nombre',         label: 'Nombre',          type: 'text',     required: true },
       { key: 'codigo',         label: 'Código',          type: 'text',     required: false },

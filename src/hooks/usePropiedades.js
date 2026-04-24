@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../Firebase';
 
 let cachedData = null;
 
 async function fetchAll() {
-  const snap = await getDocs(collection(db, 'propiedades'));
+  const q = query(collection(db, 'propiedades'), orderBy('orden', 'desc'));
+  const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 

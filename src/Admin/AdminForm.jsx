@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { getOne, create, update } from './firestoreApi';
+import { getOne, create, update, getNextOrden } from './firestoreApi';
 import TextField from './fields/TextField';
 import TextAreaField from './fields/TextAreaField';
 import ArrayUrlField from './fields/ArrayUrlField';
@@ -61,6 +61,9 @@ export default function AdminForm({ schema, mode }) {
       if (isEdit) {
         await update(schema.collection, id, payload);
       } else {
+        if (schema.autoOrder) {
+          payload.orden = await getNextOrden(schema.collection);
+        }
         await create(schema.collection, payload);
       }
       Swal.fire({
