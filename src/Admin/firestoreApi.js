@@ -9,7 +9,6 @@ import {
   query,
   orderBy,
   limit,
-  writeBatch,
 } from 'firebase/firestore';
 import { db } from '../Firebase';
 
@@ -30,14 +29,6 @@ export async function getNextOrden(collectionName) {
   if (snap.empty) return 1;
   const top = snap.docs[0].data().orden ?? 0;
   return top + 1;
-}
-
-export async function bulkUpdateOrden(collectionName, updates) {
-  const batch = writeBatch(db);
-  updates.forEach(({ id, orden }) => {
-    batch.update(doc(db, collectionName, id), { orden });
-  });
-  await batch.commit();
 }
 
 export async function getOne(collectionName, id) {
