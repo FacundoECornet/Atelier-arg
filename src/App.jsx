@@ -11,6 +11,7 @@ import Equipo from './Componentes/Equipo.jsx'
 import PropertyList from './Componentes/propiedadesCards.jsx'
 import Formulario from './Componentes/Contacto.jsx'
 import Footer from './Componentes/Footer.jsx'
+import ErrorBoundary from './Componentes/ErrorBoundary.jsx'
 import PropiedadesInfo from './Propiedades/PropiedadesInfo.jsx'
 import AllProperties from './Propiedades/Todaspropiedades.jsx'
 
@@ -47,10 +48,16 @@ function Shell() {
             path="/"
             element={
               <div className="flex flex-col">
-                <Body />
-                <Equipo />
+                <ErrorBoundary section="Inicio">
+                  <Body />
+                </ErrorBoundary>
+                <ErrorBoundary section="Equipo">
+                  <Equipo />
+                </ErrorBoundary>
                 <Pasos />
-                <PropertyList />
+                <ErrorBoundary section="Propiedades">
+                  <PropertyList />
+                </ErrorBoundary>
                 <Formulario />
                 <Noticias />
               </div>
@@ -58,16 +65,32 @@ function Shell() {
           />
 
           {/* Páginas de propiedades */}
-          <Route path="/propiedades/:id" element={<PropiedadesInfo />} />
-          <Route path="/propiedades" element={<AllProperties />} />
+          <Route
+            path="/propiedades/:id"
+            element={
+              <ErrorBoundary section="Propiedades">
+                <PropiedadesInfo />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="/propiedades"
+            element={
+              <ErrorBoundary section="Propiedades">
+                <AllProperties />
+              </ErrorBoundary>
+            }
+          />
 
           {/* Panel admin — cargado de forma lazy */}
           <Route
             path="/admin"
             element={
-              <Suspense fallback={AdminFallback}>
-                <AdminLayout />
-              </Suspense>
+              <ErrorBoundary section="Administración">
+                <Suspense fallback={AdminFallback}>
+                  <AdminLayout />
+                </Suspense>
+              </ErrorBoundary>
             }
           >
             <Route
