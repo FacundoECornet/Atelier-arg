@@ -11,7 +11,7 @@ Requirements for this improvement cycle. Each maps to roadmap phases.
 
 - [ ] **INFR-01**: Migrar de HashRouter a BrowserRouter con fallback SPA en Netlify (`/* /index.html 200`)
 - [ ] **INFR-02**: Auditar y reemplazar todos los links con `#` (href, window.location.hash) por rutas de React Router
-- [ ] **INFR-03**: Migrar configuración de Firebase a variables de entorno (`VITE_FIREBASE_*`) con validación al inicio
+- [x] **INFR-03**: Migrar configuración de Firebase a variables de entorno (`VITE_FIREBASE_*`) con validación al inicio
 - [ ] **INFR-04**: Configurar variables de entorno en Netlify (deploy preview + producción)
 
 ### Code Cleanup (CLN)
@@ -25,8 +25,8 @@ Requirements for this improvement cycle. Each maps to roadmap phases.
 
 ### Security (SEG)
 
-- [ ] **SEG-01**: Implementar Firebase Authentication (email/password) con `AuthContext`, `AuthGuard` y `LoginPage`
-- [ ] **SEG-02**: Proteger rutas `/admin/*` con `AuthGuard` (login redirige si no autenticado)
+- [x] **SEG-01**: Implementar Firebase Authentication (email/password) con `AuthContext`, `AuthGuard` y `LoginPage`
+- [x] **SEG-02**: Proteger rutas `/admin/*` con `AuthGuard` (login redirige si no autenticado)
 - [ ] **SEG-03**: Actualizar reglas de Firestore: `allow read: if true; allow write: if request.auth != null`
 - [ ] **SEG-04**: Agregar protección anti-spam a formularios (FormSpree Honeypot) en Contacto.jsx y Modal.jsx
 - [ ] **SEG-05**: Crear usuario admin único manualmente en Firebase Console
@@ -104,7 +104,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | INFR-01 | Phase 1 | Pending |
 | INFR-02 | Phase 1 | Pending |
-| INFR-03 | Phase 2 | Pending |
+| INFR-03 | Phase 2 | Complete |
 | INFR-04 | Phase 2 | Pending |
 | CLN-01 | Phase 1 | Pending |
 | CLN-02 | Phase 1 | Pending |
@@ -112,8 +112,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLN-04 | Phase 1 | Pending |
 | CLN-05 | Phase 1 | Pending |
 | CLN-06 | Phase 1 | Pending |
-| SEG-01 | Phase 2 | Pending |
-| SEG-02 | Phase 2 | Pending |
+| SEG-01 | Phase 2 | Complete |
+| SEG-02 | Phase 2 | Complete |
 | SEG-03 | Phase 2 | Pending |
 | SEG-04 | Phase 2 | Pending |
 | SEG-05 | Phase 2 | Pending |

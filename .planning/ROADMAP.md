@@ -45,7 +45,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Auth system: env vars + AuthContext + AuthGuard + LoginPage + App.jsx wiring
+- [x] 02-01-PLAN.md — Auth system: env vars + AuthContext + AuthGuard + LoginPage + App.jsx wiring
 - [ ] 02-02-PLAN.md — Firestore rules + .env.example + Netlify env config + admin user creation
 - [x] 02-03-PLAN.md — Spam protection: FormSpree _gotcha honeypot on Contacto.jsx and Modal.jsx
 
@@ -86,6 +86,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 3/3 | Complete | 2026-07-22 |
-| 2. Security Hardening | 1/3 | Executing | - |
+| 2. Security Hardening | 2/3 | In Progress|  |
 | 3. Blog System + SEO | 0/0 | Not started | - |
 | 4. Feature Polish | 0/0 | Not started | - |
