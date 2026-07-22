@@ -15,27 +15,26 @@ Phase 1 migrates the site from HashRouter to BrowserRouter (required before any 
 
 ### BrowserRouter Migration
 - **D-01:** Replace `HashRouter` with `BrowserRouter` import in `App.jsx`. Add Netlify SPA fallback: `/* /index.html 200` in `netlify.toml` or `public/_redirects`.
-- **D-02:** Audit all files for `/#/` href patterns, `window.location.hash`, and hardcoded hash paths. Replace with React Router `<Link to="/...">` and `useNavigate()`.
-- **D-03:** Add client-side hash redirect component: `useEffect` in Shell or App detecting `location.hash` with old `/#/` fragments and redirecting to the clean path via `navigate()`.
+- **D-02:** Audit links at moderate depth: grep all `.jsx` files for `/#/` patterns, plus manual review of `Header.jsx`, `Footer.jsx`, `Body.jsx` for all href patterns. Replace hash paths with React Router `<Link to="/...">` and `useNavigate()`. WhatsApp links, mailto, and external URLs are not in scope for this audit — they don't use hash fragments.
+- **D-03:** Add client-side hash redirect component: `useEffect` in Shell or App detecting `location.hash` with old `/#/` fragments and redirecting to the clean path via `navigate()`. Keep permanently — handles old bookmarks, shared links, and external references.
+- **D-03b:** Change `vite.config.js` base path from `"./"` to `"/"` for BrowserRouter compatibility. Required for nested route assets to resolve correctly.
 
 ### Code Cleanup — Dependencies
 - **D-04:** Remove orphaned deps via `npm uninstall @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`.
 - **D-05:** Remove `bulkUpdateOrden` from `src/Admin/firestoreApi.js` (line ~35, orphaned function from removed drag-and-drop feature).
 
 ### Code Cleanup — Styling Standardization
-- **D-06:** Convert `<style jsx>` block in `src/Componentes/Nosotros.jsx` to Tailwind utility classes. Verify `Equipo.jsx` for similar patterns (research flagged possible duplication).
+- **D-06:** Convert `<style jsx>` block in `src/Componentes/Equipo.jsx` (lines ~81-88) to Tailwind utility classes.
 - **D-07:** Remove `styled-components` from `src/Componentes/Social.jsx`. Convert icon hover effects to Tailwind `hover:text-*` and `hover:scale-*` classes.
 
 ### Code Cleanup — Linting & Formatting
-- **D-08:** Add `eslint-plugin-react` to `eslint.config.js` (ESLint v10 flat config). Add `prettier` and `eslint-config-prettier`. Run `npx prettier --write src/` for initial formatting.
+- **D-08:** Add `eslint-plugin-react`, `globals`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh` to `eslint.config.js` (packages already imported but missing from node_modules). Add `prettier` and `eslint-config-prettier`. Prettier config matches existing code style: single quotes, no semicolons, 2-space indent, trailing commas. Run `npx prettier --write src/` for initial formatting.
 
 ### Error Boundaries
-- **D-09:** Create reusable `ErrorBoundary` class component. Wrap Body, Equipo, Propiedades, and Admin sections. Fallback UI: Spanish error message with section name — in Spanish matching site language.
+- **D-09:** Create reusable `ErrorBoundary` class component. Wrap only `Propiedades` (data-heavy, most likely to fail) and `Admin` sections. Fallback UI: minimal Spanish error text, preserve surrounding layout, no SweetAlert. Body and Equipo sections excluded — they are static content, low failure risk.
 
 ### Agent's Discretion
-- Prettier config specifics (semicolons, quotes, tab width) — match existing code style from conventions: arrow functions, no semicolons detected, single quotes.
-- Error Boundary fallback design — keep minimal, preserve surrounding layout, no SweetAlert (avoid popup on critical sections).
-- Link audit depth — search all `.jsx` files for regex `/#\/` patterns.
+- Error Boundary fallback design — keep minimal, preserve surrounding layout, no SweetAlert (avoid popup on critical sections). Wrap only Propiedades and Admin.
 
 ## Canonical References
 
@@ -66,8 +65,7 @@ Phase 1 migrates the site from HashRouter to BrowserRouter (required before any 
 - `src/App.jsx` — Router setup, Shell layout, all route definitions. Primary file to modify.
 - `src/Admin/firestoreApi.js` — Contains orphaned `bulkUpdateOrden` to remove (line ~35).
 - `src/Componentes/Social.jsx` — Only file using `styled-components`. Convert to Tailwind.
-- `src/Componentes/Nosotros.jsx` — Contains inert `<style jsx>` block. Convert to Tailwind.
-- `src/Componentes/Equipo.jsx` — May also contain `<style jsx>` or styled-components. Verify.
+- `src/Componentes/Equipo.jsx` — Contains inert `<style jsx>` block (lines ~81-88). Convert to Tailwind.
 
 ### Established Patterns
 - Arrow functions: `const Component = () => { ... }` — keep for ErrorBoundary (class-based still acceptable for error boundaries).
