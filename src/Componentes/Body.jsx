@@ -6,8 +6,7 @@ import pareja from '../Imagenes/pareja-modal.jpg';
 const Body = () => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleScrollToContact = (e) => {
-    e.preventDefault();
+  const handleScrollToContact = () => {
     document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -50,13 +49,13 @@ const Body = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href="#contacto"
+                  <button
+                    type="button"
                     onClick={handleScrollToContact}
                     className="border-2 border-black text-black font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:bg-black hover:text-white text-center"
                   >
                     Pongase en contacto
-                  </a>
+                  </button>
 
                   <button
                     onClick={() => setShowModal(true)}

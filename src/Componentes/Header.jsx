@@ -59,7 +59,7 @@ export default function Navbar() {
   const isActive = (item) => {
     if (item.type === 'navigate') return location.pathname === item.to;
     if (item.to === '/') return location.pathname === '/';
-    if (item.to.startsWith('#')) return location.pathname === '/' && location.hash === item.to;
+    if (item.to.startsWith('#')) return location.pathname === '/';
     return false;
   };
 
@@ -101,7 +101,7 @@ export default function Navbar() {
 
               <div className="flex-shrink-0">
                 <a
-                  href="#contacto"
+                  href="/"
                   onClick={handleClick({ to: '#contacto', type: 'scroll' })}
                   className="bg-black text-white px-6 py-2 rounded-md border border-black hover:bg-white hover:text-black transition-all duration-200 font-medium"
                 >
@@ -150,7 +150,7 @@ export default function Navbar() {
               ))}
               <Disclosure.Button
                 as="a"
-                href="#contacto"
+                href="/"
                 onClick={handleClick({ to: '#contacto', type: 'scroll' })}
                 className="block text-white bg-black hover:bg-gray-800 px-4 py-3 rounded-md text-base font-medium transition-all duration-200 mt-4"
               >
