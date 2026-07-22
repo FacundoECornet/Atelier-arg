@@ -1,18 +1,33 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: 'REDACTED_API_KEY',
-  authDomain: 'atelierhomesarg.firebaseapp.com',
-  projectId: 'atelierhomesarg',
-  storageBucket: 'atelierhomesarg.appspot.com',
-  messagingSenderId: 'REDACTED_ID',
-  appId: '1:REDACTED_ID:web:e0d5353bb8715b1c8c4683',
-  measurementId: 'REDACTED_MEASUREMENT_ID',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
-// Inicializar Firebase
+const requiredVars = [
+  'VITE_FIREBASE_API_KEY',
+  'VITE_FIREBASE_AUTH_DOMAIN',
+  'VITE_FIREBASE_PROJECT_ID',
+  'VITE_FIREBASE_STORAGE_BUCKET',
+  'VITE_FIREBASE_MESSAGING_SENDER_ID',
+  'VITE_FIREBASE_APP_ID',
+]
+for (const key of requiredVars) {
+  if (!import.meta.env[key]) {
+    throw new Error(`Missing required environment variable: ${key}`)
+  }
+}
+
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
+const auth = getAuth(app)
 
-export { db }
+export { db, auth }

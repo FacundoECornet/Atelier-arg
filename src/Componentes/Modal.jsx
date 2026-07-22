@@ -35,6 +35,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
     estado: '',
     direccion: '',
     descripcion: '',
+    _gotcha: '',
   })
 
   const [location, setLocation] = useState([-26.800137, -65.302171])
@@ -226,6 +227,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
           estado: '',
           direccion: '',
           descripcion: '',
+          _gotcha: '',
         })
         setStep(1)
         handleCloseModal()
@@ -318,6 +320,15 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
         {/* Contenido del formulario */}
         <div className="flex-1 overflow-y-auto">
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6" autoComplete="off">
+            <input
+              type="text"
+              name="_gotcha"
+              style={{ display: 'none' }}
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData._gotcha}
+              onChange={handleChange}
+            />
             {/* Paso 1 - Información Personal */}
             {step === 1 && (
               <div className="space-y-6">
