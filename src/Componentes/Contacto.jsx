@@ -9,6 +9,7 @@ const Formulario = () => {
     email: '',
     telefono: '',
     mensaje: '',
+    _gotcha: '',
   })
 
   const handleChange = (e) => {
@@ -44,6 +45,7 @@ const Formulario = () => {
           email: '',
           telefono: '',
           mensaje: '',
+          _gotcha: '',
         })
       } else {
         Swal.fire({
@@ -152,6 +154,16 @@ const Formulario = () => {
                 className="w-full border border-gray-300 bg-gray-100 text-gray-800 px-4 py-2 rounded"
               />
             </div>
+
+            <input
+              type="text"
+              name="_gotcha"
+              style={{ display: 'none' }}
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData._gotcha}
+              onChange={handleChange}
+            />
 
             <div className="text-center mt-6">
               <button
