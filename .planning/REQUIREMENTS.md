@@ -102,45 +102,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | — | Pending |
-| INFR-02 | — | Pending |
-| INFR-03 | — | Pending |
-| INFR-04 | — | Pending |
-| CLN-01 | — | Pending |
-| CLN-02 | — | Pending |
-| CLN-03 | — | Pending |
-| CLN-04 | — | Pending |
-| CLN-05 | — | Pending |
-| CLN-06 | — | Pending |
-| SEG-01 | — | Pending |
-| SEG-02 | — | Pending |
-| SEG-03 | — | Pending |
-| SEG-04 | — | Pending |
-| SEG-05 | — | Pending |
-| BLOG-01 | — | Pending |
-| BLOG-02 | — | Pending |
-| BLOG-03 | — | Pending |
-| BLOG-04 | — | Pending |
-| BLOG-05 | — | Pending |
-| BLOG-06 | — | Pending |
-| BLOG-07 | — | Pending |
-| SEO-01 | — | Pending |
-| SEO-02 | — | Pending |
-| SEO-03 | — | Pending |
-| SEO-04 | — | Pending |
-| SEO-05 | — | Pending |
-| PROP-01 | — | Pending |
-| PROP-02 | — | Pending |
-| TEAM-03 | — | Pending |
-| TEAM-04 | — | Pending |
-| TEAM-05 | — | Pending |
-| PERF-01 | — | Pending |
-| PERF-02 | — | Pending |
+| INFR-01 | Phase 1 | Pending |
+| INFR-02 | Phase 1 | Pending |
+| INFR-03 | Phase 2 | Pending |
+| INFR-04 | Phase 2 | Pending |
+| CLN-01 | Phase 1 | Pending |
+| CLN-02 | Phase 1 | Pending |
+| CLN-03 | Phase 1 | Pending |
+| CLN-04 | Phase 1 | Pending |
+| CLN-05 | Phase 1 | Pending |
+| CLN-06 | Phase 1 | Pending |
+| SEG-01 | Phase 2 | Pending |
+| SEG-02 | Phase 2 | Pending |
+| SEG-03 | Phase 2 | Pending |
+| SEG-04 | Phase 2 | Pending |
+| SEG-05 | Phase 2 | Pending |
+| BLOG-01 | Phase 3 | Pending |
+| BLOG-02 | Phase 3 | Pending |
+| BLOG-03 | Phase 3 | Pending |
+| BLOG-04 | Phase 3 | Pending |
+| BLOG-05 | Phase 3 | Pending |
+| BLOG-06 | Phase 3 | Pending |
+| BLOG-07 | Phase 3 | Pending |
+| SEO-01 | Phase 3 | Pending |
+| SEO-02 | Phase 3 | Pending |
+| SEO-03 | Phase 3 | Pending |
+| SEO-04 | Phase 3 | Pending |
+| SEO-05 | Phase 3 | Pending |
+| PROP-01 | Phase 4 | Pending |
+| PROP-02 | Phase 4 | Pending |
+| TEAM-03 | Phase 4 | Pending |
+| TEAM-04 | Phase 4 | Pending |
+| TEAM-05 | Phase 4 | Pending |
+| PERF-01 | Phase 4 | Pending |
+| PERF-02 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 33 total
-- Mapped to phases: 0
-- Unmapped: 33 ⚠️
+- v1 requirements: 34 total
+- Mapped to phases: 34
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-07-22*
