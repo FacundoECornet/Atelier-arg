@@ -42,8 +42,12 @@ Plans:
   3. Public pages (`/`, `/propiedades`, `/nosotros`, `/contacto`) load content correctly — Firestore reads work without authentication
   4. Direct Firestore write operations via SDK fail for unauthenticated requests (`allow read: if true; allow write: if request.auth != null`)
   5. Form submissions via Contacto.jsx and Modal.jsx include Honeypot field — spam bots are blocked while real users submit normally
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Auth system: env vars + AuthContext + AuthGuard + LoginPage + App.jsx wiring
+- [ ] 02-02-PLAN.md — Firestore rules + .env.example + Netlify env config + admin user creation
+- [ ] 02-03-PLAN.md — Spam protection: FormSpree _gotcha honeypot on Contacto.jsx and Modal.jsx
 
 ### Phase 3: Blog System + SEO
 **Goal**: Blog section with admin rich-text editor and public pages delivers SEO-ready content — build-time static HTML, per-page meta tags, sitemap, semantic HTML.
@@ -82,6 +86,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 0/3 | Planned | - |
-| 2. Security Hardening | 0/0 | Not started | - |
+| 2. Security Hardening | 0/3 | Planned | - |
 | 3. Blog System + SEO | 0/0 | Not started | - |
 | 4. Feature Polish | 0/0 | Not started | - |
