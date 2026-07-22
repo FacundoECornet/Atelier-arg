@@ -47,7 +47,7 @@ Plans:
 Plans:
 - [ ] 02-01-PLAN.md — Auth system: env vars + AuthContext + AuthGuard + LoginPage + App.jsx wiring
 - [ ] 02-02-PLAN.md — Firestore rules + .env.example + Netlify env config + admin user creation
-- [ ] 02-03-PLAN.md — Spam protection: FormSpree _gotcha honeypot on Contacto.jsx and Modal.jsx
+- [x] 02-03-PLAN.md — Spam protection: FormSpree _gotcha honeypot on Contacto.jsx and Modal.jsx
 
 ### Phase 3: Blog System + SEO
 **Goal**: Blog section with admin rich-text editor and public pages delivers SEO-ready content — build-time static HTML, per-page meta tags, sitemap, semantic HTML.
@@ -85,7 +85,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/3 | Planned | - |
-| 2. Security Hardening | 0/3 | Planned | - |
+| 1. Foundation & Infrastructure | 3/3 | Complete | 2026-07-22 |
+| 2. Security Hardening | 1/3 | Executing | - |
 | 3. Blog System + SEO | 0/0 | Not started | - |
 | 4. Feature Polish | 0/0 | Not started | - |
