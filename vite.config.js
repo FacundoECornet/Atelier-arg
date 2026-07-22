@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  base: './', // esta línea es importante para produccion
+  base: '/', // BrowserRouter requiere base absoluta para URLs limpias
   plugins: [react()],
   resolve: {
     alias: {

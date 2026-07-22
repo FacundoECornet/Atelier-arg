@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import './App.css';
 
@@ -25,7 +25,17 @@ const AdminFallback = <div className="text-center py-20 text-gray-400">Cargandoâ
 
 function Shell() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isAdmin = pathname.startsWith('/admin');
+
+  // Redirigir fragmentos hash antiguos (/#/ruta â†’ /ruta)
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#/')) {
+      const clean = hash.replace(/^#/, '');
+      navigate(clean, { replace: true });
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
