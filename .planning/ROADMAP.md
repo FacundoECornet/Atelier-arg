@@ -24,7 +24,12 @@ Four-phase improvement cycle for the Atelier Homes Argentina real estate site. P
   3. Clicking any link in navigation, footer, or homepage sections navigates correctly without `#` in the URL
   4. `npm run build` completes without `@dnd-kit/*` packages or `styled-components` in bundle, and zero `<style jsx>` blocks in source
   5. All main sections (Body, Equipo, Propiedades, Admin) render without white screens — Error Boundaries catch and display fallback UI on failure
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — BrowserRouter migration + link audit + hash redirect
+- [ ] 01-02-PLAN.md — Dependency cleanup + style standardization (Tailwind only)
+- [ ] 01-03-PLAN.md — ESLint + Prettier + Error Boundaries
 
 ### Phase 2: Security Hardening
 **Goal**: Admin panel requires authentication, Firestore writes are protected, Firebase config uses env vars, all contact forms have spam protection.
@@ -76,7 +81,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/0 | Not started | - |
+| 1. Foundation & Infrastructure | 0/3 | Planned | - |
 | 2. Security Hardening | 0/0 | Not started | - |
 | 3. Blog System + SEO | 0/0 | Not started | - |
 | 4. Feature Polish | 0/0 | Not started | - |
