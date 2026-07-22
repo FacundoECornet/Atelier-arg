@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Swal from 'sweetalert2';
-import { Map, Marker } from 'pigeon-maps';
+import React, { useState, useEffect, useRef } from 'react'
+import Swal from 'sweetalert2'
+import { Map, Marker } from 'pigeon-maps'
 
 const getNearbyCoords = (lat, lon, meters) => {
-  const offset = meters * 0.000009;
+  const offset = meters * 0.000009
   return [
     [lat + offset, lon],
     [lat - offset, lon],
     [lat, lon + offset],
     [lat, lon - offset],
-  ];
-};
+  ]
+}
 
 const ModalTasacion = ({ showModal, handleCloseModal }) => {
-  const [step, setStep] = useState(1);
-  const [loadingGeo, setLoadingGeo] = useState(false);
+  const [step, setStep] = useState(1)
+  const [loadingGeo, setLoadingGeo] = useState(false)
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -35,80 +35,80 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
     estado: '',
     direccion: '',
     descripcion: '',
-  });
+  })
 
-  const [location, setLocation] = useState([-26.800137, -65.302171]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const debounceTimer = useRef(null);
+  const [location, setLocation] = useState([-26.800137, -65.302171])
+  const [suggestions, setSuggestions] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const debounceTimer = useRef(null)
 
   // =======================
   // Autocomplete direcciones
   // =======================
   useEffect(() => {
     if (formData.direccion.trim().length < 5) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
     }
 
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current)
 
     debounceTimer.current = setTimeout(() => {
-      setLoadingGeo(true);
+      setLoadingGeo(true)
       fetch(
         `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(
-          formData.direccion + ', Tucumán, Argentina',
-        )}`,
+          formData.direccion + ', Tucumán, Argentina'
+        )}`
       )
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data) && data.length > 0) {
-            setSuggestions(data);
-            setShowSuggestions(true);
+            setSuggestions(data)
+            setShowSuggestions(true)
           } else {
-            setSuggestions([]);
-            setShowSuggestions(false);
+            setSuggestions([])
+            setShowSuggestions(false)
           }
         })
         .catch(() => {
-          setSuggestions([]);
-          setShowSuggestions(false);
+          setSuggestions([])
+          setShowSuggestions(false)
         })
-        .finally(() => setLoadingGeo(false));
-    }, 500);
-  }, [formData.direccion]);
+        .finally(() => setLoadingGeo(false))
+    }, 500)
+  }, [formData.direccion])
 
   // ======================
   // Reverse geocode + mapa
   // ======================
   const reverseGeocodeWithNearby = async (lat, lon) => {
-    setLoadingGeo(true);
+    setLoadingGeo(true)
 
     async function fetchReverse(lat, lon) {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`,
-      );
-      if (!res.ok) throw new Error('Error en fetch');
-      return await res.json();
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`
+      )
+      if (!res.ok) throw new Error('Error en fetch')
+      return await res.json()
     }
 
     try {
-      let data = await fetchReverse(lat, lon);
+      let data = await fetchReverse(lat, lon)
       if (data.address && data.address.house_number) {
-        setFormData((prev) => ({ ...prev, direccion: data.display_name }));
-        setLocation([lat, lon]);
-        return;
+        setFormData((prev) => ({ ...prev, direccion: data.display_name }))
+        setLocation([lat, lon])
+        return
       }
 
-      const nearbyCoords = getNearbyCoords(lat, lon, 10);
+      const nearbyCoords = getNearbyCoords(lat, lon, 10)
       for (const [nLat, nLon] of nearbyCoords) {
         try {
-          data = await fetchReverse(nLat, nLon);
+          data = await fetchReverse(nLat, nLon)
           if (data.address && data.address.house_number) {
-            setFormData((prev) => ({ ...prev, direccion: data.display_name }));
-            setLocation([nLat, nLon]);
-            return;
+            setFormData((prev) => ({ ...prev, direccion: data.display_name }))
+            setLocation([nLat, nLon])
+            return
           }
         } catch {
           // ignoro error
@@ -116,63 +116,63 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       }
 
       if (data.display_name) {
-        setFormData((prev) => ({ ...prev, direccion: data.display_name }));
-        setLocation([lat, lon]);
+        setFormData((prev) => ({ ...prev, direccion: data.display_name }))
+        setLocation([lat, lon])
       }
     } catch {
       // fail silently
     } finally {
-      setLoadingGeo(false);
+      setLoadingGeo(false)
     }
-  };
+  }
 
   // ========================
   // Eventos de input y mapa
   // ========================
   const handleMapClick = ({ latLng }) => {
-    const [lat, lon] = latLng;
-    reverseGeocodeWithNearby(lat, lon);
-    setShowSuggestions(false);
-  };
+    const [lat, lon] = latLng
+    reverseGeocodeWithNearby(lat, lon)
+    setShowSuggestions(false)
+  }
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }));
+    }))
     if (e.target.name === 'direccion') {
-      setShowSuggestions(true);
+      setShowSuggestions(true)
     }
-  };
+  }
 
   const handleSuggestionClick = (suggestion) => {
     setFormData((prev) => ({
       ...prev,
       direccion: suggestion.display_name,
-    }));
-    setLocation([parseFloat(suggestion.lat), parseFloat(suggestion.lon)]);
-    setShowSuggestions(false);
-  };
+    }))
+    setLocation([parseFloat(suggestion.lat), parseFloat(suggestion.lon)])
+    setShowSuggestions(false)
+  }
 
   const handleDireccionKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
+      e.preventDefault()
       if (suggestions.length > 0) {
-        handleSuggestionClick(suggestions[0]);
+        handleSuggestionClick(suggestions[0])
       } else {
-        setShowSuggestions(false);
+        setShowSuggestions(false)
       }
     }
-  };
+  }
 
-  const handleNext = () => setStep((prev) => prev + 1);
-  const handleBack = () => setStep((prev) => prev - 1);
+  const handleNext = () => setStep((prev) => prev + 1)
+  const handleBack = () => setStep((prev) => prev - 1)
 
   // =================
   // Envío de formulario
   // =================
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (
       !formData.nombre ||
@@ -186,8 +186,8 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
       Swal.fire({
         icon: 'warning',
         title: 'Por favor completa los campos obligatorios.',
-      });
-      return;
+      })
+      return
     }
 
     try {
@@ -198,14 +198,14 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
           Accept: 'application/json',
         },
         body: JSON.stringify(formData),
-      });
+      })
 
       if (response.ok) {
         Swal.fire({
           title: '¡Solicitud enviada!',
           text: 'Nos contactaremos pronto para coordinar la tasación.',
           icon: 'success',
-        });
+        })
         setFormData({
           nombre: '',
           apellido: '',
@@ -226,37 +226,37 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
           estado: '',
           direccion: '',
           descripcion: '',
-        });
-        setStep(1);
-        handleCloseModal();
+        })
+        setStep(1)
+        handleCloseModal()
       } else {
-        throw new Error();
+        throw new Error()
       }
     } catch {
       Swal.fire({
         title: 'Error',
         text: 'Ocurrió un problema al enviar el formulario.',
         icon: 'error',
-      });
+      })
     }
-  };
+  }
 
   const getStepTitle = () => {
     switch (step) {
       case 1:
-        return 'Información Personal';
+        return 'Información Personal'
       case 2:
-        return 'Características de la Propiedad';
+        return 'Características de la Propiedad'
       case 3:
-        return 'Detalles Adicionales';
+        return 'Detalles Adicionales'
       case 4:
-        return 'Ubicación y Descripción';
+        return 'Ubicación y Descripción'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
-  if (!showModal) return null;
+  if (!showModal) return null
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
@@ -296,8 +296,8 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                     step === n
                       ? 'bg-black text-white shadow-lg scale-110'
                       : step > n
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
                   }`}
                   onClick={() => setStep(n)}
                 >
@@ -603,7 +603,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                     onKeyDown={handleDireccionKeyDown}
                     autoComplete="off"
                     onFocus={() => {
-                      if (suggestions.length > 0) setShowSuggestions(true);
+                      if (suggestions.length > 0) setShowSuggestions(true)
                     }}
                   />
 
@@ -618,8 +618,8 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
-                              e.preventDefault();
-                              handleSuggestionClick(sug);
+                              e.preventDefault()
+                              handleSuggestionClick(sug)
                             }
                           }}
                         >
@@ -709,7 +709,7 @@ const ModalTasacion = ({ showModal, handleCloseModal }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ModalTasacion;
+export default ModalTasacion

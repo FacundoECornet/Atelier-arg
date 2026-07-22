@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function TextAreaField({ field, value, onChange }) {
   return (
@@ -15,5 +15,5 @@ export default function TextAreaField({ field, value, onChange }) {
         className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black text-sm resize-y"
       />
     </div>
-  );
+  )
 }

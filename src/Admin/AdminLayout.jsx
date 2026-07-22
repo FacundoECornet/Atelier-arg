@@ -1,25 +1,28 @@
-import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { schemas } from './schemas';
+import React from 'react'
+import { Outlet, Link, useLocation } from 'react-router-dom'
+import { schemas } from './schemas'
 
 const sections = [
   { key: 'propiedades', label: 'Propiedades', path: '/admin/propiedades' },
-  { key: 'noticias',    label: 'Noticias',    path: '/admin/noticias' },
-  { key: 'nosotros',   label: 'Equipo',       path: '/admin/nosotros' },
-];
+  { key: 'noticias', label: 'Noticias', path: '/admin/noticias' },
+  { key: 'nosotros', label: 'Equipo', path: '/admin/nosotros' },
+]
 
 export default function AdminLayout() {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-black text-white px-6 py-4 flex items-center justify-between shadow-lg">
-        <Link to="/admin" className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity">
+        <Link
+          to="/admin"
+          className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity"
+        >
           Panel Admin — Atelier
         </Link>
         <nav className="flex gap-2">
           {sections.map((s) => {
-            const active = pathname.startsWith(s.path);
+            const active = pathname.startsWith(s.path)
             return (
               <Link
                 key={s.key}
@@ -32,7 +35,7 @@ export default function AdminLayout() {
               >
                 {s.label}
               </Link>
-            );
+            )
           })}
         </nav>
         <Link to="/" className="text-xs text-gray-400 hover:text-white transition-colors">
@@ -44,5 +47,5 @@ export default function AdminLayout() {
         <Outlet />
       </main>
     </div>
-  );
+  )
 }

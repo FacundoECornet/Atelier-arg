@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import consulta from '../Imagenes/Atelier-26.webp';
-import valor from '../Imagenes/valoracion.webp';
-import casa from '../Imagenes/Mercedes Costal-23.webp';
-import post from '../Imagenes/post-venta.webp';
-import contrato from '../Imagenes/Atelier-llaves.webp';
-import mark from '../Imagenes/mark.webp';
-import visita from '../Imagenes/visita (1).webp';
-import informe from '../Imagenes/informe.webp';
+import { useState } from 'react'
+import consulta from '../Imagenes/Atelier-26.webp'
+import valor from '../Imagenes/valoracion.webp'
+import casa from '../Imagenes/Mercedes Costal-23.webp'
+import post from '../Imagenes/post-venta.webp'
+import contrato from '../Imagenes/Atelier-llaves.webp'
+import mark from '../Imagenes/mark.webp'
+import visita from '../Imagenes/visita (1).webp'
+import informe from '../Imagenes/informe.webp'
 
 const pasos = [
   {
@@ -73,15 +73,15 @@ const pasos = [
       'Nuestro compromiso no termina con la venta. Seguimos a su disposición para cualquier consulta posterior...',
     imageSrc: post,
   },
-];
+]
 
 export default function Pasos() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  const handleNext = () => setActiveIndex((prev) => (prev + 1) % pasos.length);
-  const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pasos.length) % pasos.length);
+  const handleNext = () => setActiveIndex((prev) => (prev + 1) % pasos.length)
+  const handlePrev = () => setActiveIndex((prev) => (prev - 1 + pasos.length) % pasos.length)
 
-  const paso = pasos[activeIndex];
+  const paso = pasos[activeIndex]
 
   return (
     <div className="px-3 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-7xl mx-auto" id="pasos">
@@ -102,8 +102,8 @@ export default function Pasos() {
         <div className="overflow-x-auto overflow-y-hidden scrollbar-none">
           <div className="flex justify-start sm:justify-center items-center space-x-2 sm:space-x-4 md:space-x-6 relative z-10 px-4 pb-2 min-w-max sm:min-w-0">
             {pasos.map((p, i) => {
-              const isActive = i === activeIndex;
-              const isCompleted = i < activeIndex;
+              const isActive = i === activeIndex
+              const isCompleted = i < activeIndex
 
               return (
                 <div
@@ -116,8 +116,8 @@ export default function Pasos() {
                       isActive
                         ? 'bg-black text-white scale-110 shadow-lg'
                         : isCompleted
-                        ? 'bg-gray-800 text-white hover:bg-gray-700'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? 'bg-gray-800 text-white hover:bg-gray-700'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
                   >
                     {p.icon}
@@ -126,7 +126,7 @@ export default function Pasos() {
                     {p.title.length > 12 ? p.title.split(' ').slice(0, 2).join(' ') : p.title}
                   </span>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -143,7 +143,9 @@ export default function Pasos() {
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
               loading="lazy"
               decoding="async"
-              onError={(e) => { e.target.src = '/api/placeholder/600/400'; }}
+              onError={(e) => {
+                e.target.src = '/api/placeholder/600/400'
+              }}
             />
           </div>
 
@@ -185,8 +187,8 @@ export default function Pasos() {
                     i === activeIndex
                       ? 'bg-black scale-125'
                       : i < activeIndex
-                      ? 'bg-gray-500'
-                      : 'bg-gray-300'
+                        ? 'bg-gray-500'
+                        : 'bg-gray-300'
                   }`}
                 />
               ))}
@@ -204,5 +206,5 @@ export default function Pasos() {
         </div>
       </div>
     </div>
-  );
+  )
 }

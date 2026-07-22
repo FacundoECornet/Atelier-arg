@@ -1,21 +1,24 @@
-import React from 'react';
-import { hideImgOnError } from '../../utils/imgFallback';
+import React from 'react'
+import { hideImgOnError } from '../../utils/imgFallback'
 
 export default function ArrayUrlField({ field, value = [], onChange }) {
-  const urls = Array.isArray(value) ? value : [];
+  const urls = Array.isArray(value) ? value : []
 
   function set(idx, val) {
-    const next = [...urls];
-    next[idx] = val;
-    onChange(field.key, next);
+    const next = [...urls]
+    next[idx] = val
+    onChange(field.key, next)
   }
 
   function add() {
-    onChange(field.key, [...urls, '']);
+    onChange(field.key, [...urls, ''])
   }
 
   function remove(idx) {
-    onChange(field.key, urls.filter((_, i) => i !== idx));
+    onChange(
+      field.key,
+      urls.filter((_, i) => i !== idx)
+    )
   }
 
   return (
@@ -56,5 +59,5 @@ export default function ArrayUrlField({ field, value = [], onChange }) {
         + Agregar URL
       </button>
     </div>
-  );
+  )
 }

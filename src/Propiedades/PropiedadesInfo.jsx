@@ -1,64 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../Firebase';
-import { handleImgFallback } from '../utils/imgFallback';
+import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../Firebase'
+import { handleImgFallback } from '../utils/imgFallback'
 
-const PLACEHOLDER = '/placeholder-property.jpg';
+const PLACEHOLDER = '/placeholder-property.jpg'
 
 const PropiedadesInfo = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams()
+  const navigate = useNavigate()
 
-  const [property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [property, setProperty] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false)
+  const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
         // Try direct doc lookup first (fastest path)
-        const snap = await getDoc(doc(db, 'propiedades', id));
+        const snap = await getDoc(doc(db, 'propiedades', id))
         if (snap.exists()) {
-          setProperty({ id: snap.id, ...snap.data() });
-          return;
+          setProperty({ id: snap.id, ...snap.data() })
+          return
         }
         // Fallback: lookup by codigo field
-        const q = query(collection(db, 'propiedades'), where('codigo', '==', id));
-        const qSnap = await getDocs(q);
+        const q = query(collection(db, 'propiedades'), where('codigo', '==', id))
+        const qSnap = await getDocs(q)
         if (!qSnap.empty) {
-          const d = qSnap.docs[0];
-          setProperty({ id: d.id, ...d.data() });
+          const d = qSnap.docs[0]
+          setProperty({ id: d.id, ...d.data() })
         } else {
-          setError('Propiedad no encontrada.');
+          setError('Propiedad no encontrada.')
         }
       } catch {
-        setError('Error al cargar la propiedad.');
+        setError('Error al cargar la propiedad.')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    fetchProperty();
-  }, [id]);
+    }
+    fetchProperty()
+  }, [id])
 
   const openModal = (index) => {
-    setCurrentImgIndex(index);
-    setModalOpen(true);
-  };
+    setCurrentImgIndex(index)
+    setModalOpen(true)
+  }
 
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => setModalOpen(false)
 
   const prevImage = () =>
-    setCurrentImgIndex((prev) => (prev === 0 ? property.galeria.length - 1 : prev - 1));
+    setCurrentImgIndex((prev) => (prev === 0 ? property.galeria.length - 1 : prev - 1))
 
   const nextImage = () =>
-    setCurrentImgIndex((prev) => (prev === property.galeria.length - 1 ? 0 : prev + 1));
+    setCurrentImgIndex((prev) => (prev === property.galeria.length - 1 ? 0 : prev + 1))
 
-  if (loading) return <div className="text-center py-20 text-xl">Cargando...</div>;
-  if (error) return <div className="text-center text-red-500 py-20">{error}</div>;
+  if (loading) return <div className="text-center py-20 text-xl">Cargando...</div>
+  if (error) return <div className="text-center text-red-500 py-20">{error}</div>
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
@@ -178,9 +178,9 @@ const PropiedadesInfo = () => {
           <button
             onClick={() => {
               try {
-                navigate(-1);
+                navigate(-1)
               } catch {
-                window.location.href = '/';
+                window.location.href = '/'
               }
             }}
             className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
@@ -189,9 +189,9 @@ const PropiedadesInfo = () => {
           </button>
           <button
             onClick={() => {
-              const mensaje = `Hola, buen día. Me interesa la propiedad "${property.Nombre}". ¿Podrían darme más información, por favor?`;
-              const url = `https://wa.me/5493812105720?text=${encodeURIComponent(mensaje)}`;
-              window.open(url, '_blank');
+              const mensaje = `Hola, buen día. Me interesa la propiedad "${property.Nombre}". ¿Podrían darme más información, por favor?`
+              const url = `https://wa.me/5493812105720?text=${encodeURIComponent(mensaje)}`
+              window.open(url, '_blank')
             }}
             className="bg-black text-white px-5 py-2 rounded-lg hover:scale-[1.02] transition duration-200 text-sm"
           >
@@ -200,7 +200,7 @@ const PropiedadesInfo = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default PropiedadesInfo;
+export default PropiedadesInfo

@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { usePropiedades } from '../hooks/usePropiedades';
-import { formatPrice } from '../utils/formatPrice';
-import { handleImgFallback } from '../utils/imgFallback';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { usePropiedades } from '../hooks/usePropiedades'
+import { formatPrice } from '../utils/formatPrice'
+import { handleImgFallback } from '../utils/imgFallback'
 
-const PLACEHOLDER = '/placeholder-property.jpg';
+const PLACEHOLDER = '/placeholder-property.jpg'
 
 const AllProperties = () => {
-  const { propiedades, loading, error } = usePropiedades();
-  const [filteredProperties, setFilteredProperties] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState('Tucumán');
-  const navigate = useNavigate();
+  const { propiedades, loading, error } = usePropiedades()
+  const [filteredProperties, setFilteredProperties] = useState([])
+  const [selectedLocation, setSelectedLocation] = useState('Tucumán')
+  const navigate = useNavigate()
 
   const getProvince = (ubicacion) => {
-    if (!ubicacion) return 'Otra';
-    const lower = ubicacion.toLowerCase();
+    if (!ubicacion) return 'Otra'
+    const lower = ubicacion.toLowerCase()
     const tucumanLocalidades = [
       'san miguel de tucuman',
       'tucumán',
@@ -22,7 +22,7 @@ const AllProperties = () => {
       'concepción',
       'santa ana',
       'tafi viejo',
-    ];
+    ]
     const buenosAiresLocalidades = [
       'buenos aires',
       'la plata',
@@ -74,29 +74,27 @@ const AllProperties = () => {
       'san telmo',
       'monserrat',
       'barracas',
-    ];
-    if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán';
-    if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires';
-    return 'Otra';
-  };
+    ]
+    if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán'
+    if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires'
+    return 'Otra'
+  }
 
   useEffect(() => {
-    setFilteredProperties(
-      propiedades.filter((p) => getProvince(p.ubicacion) === selectedLocation),
-    );
-  }, [propiedades, selectedLocation]);
+    setFilteredProperties(propiedades.filter((p) => getProvince(p.ubicacion) === selectedLocation))
+  }, [propiedades, selectedLocation])
 
   const filterByLocation = (location) => {
-    setSelectedLocation(location);
-  };
+    setSelectedLocation(location)
+  }
 
   const handlePropertyClick = (propertyId) => {
     try {
-      navigate(`/propiedades/${propertyId}`);
+      navigate(`/propiedades/${propertyId}`)
     } catch {
-      window.location.href = `/propiedades/${propertyId}`;
+      window.location.href = `/propiedades/${propertyId}`
     }
-  };
+  }
 
   if (loading) {
     return (
@@ -106,7 +104,7 @@ const AllProperties = () => {
           <p className="text-gray-600">Cargando propiedades...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -122,7 +120,7 @@ const AllProperties = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -158,7 +156,7 @@ const AllProperties = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProperties.map((property) => {
-          const formattedPrice = formatPrice(property.precio);
+          const formattedPrice = formatPrice(property.precio)
           return (
             <div
               key={property.id}
@@ -198,11 +196,11 @@ const AllProperties = () => {
                 </p>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AllProperties;
+export default AllProperties

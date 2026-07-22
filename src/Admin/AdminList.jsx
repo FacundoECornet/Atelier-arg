@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { listAll, listAllOrdered, remove } from './firestoreApi';
-import { hideImgOnError } from '../utils/imgFallback';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import { listAll, listAllOrdered, remove } from './firestoreApi'
+import { hideImgOnError } from '../utils/imgFallback'
 
 const tucumanLocalidades = [
   'san miguel de tucuman',
@@ -11,53 +11,94 @@ const tucumanLocalidades = [
   'concepción',
   'santa ana',
   'tafi viejo',
-];
+]
 
 const buenosAiresLocalidades = [
-  'buenos aires', 'la plata', 'mar del plata', 'quilmes', 'lomas de zamora',
-  'belgrano', 'palermo', 'recoleta', 'caballito', 'san isidro', 'avellaneda',
-  'lanús', 'morón', 'san justo', 'haedo', 'castelar', 'merlo', 'temperley',
-  'burzaco', 'adrogue', 'banfield', 'olivos', 'vicente lopez', 'tigre',
-  'san fernando', 'pilar', 'escobar', 'zarate', 'campana', 'lujan',
-  'carmen de areco', 'saladillo', 'chivilcoy', 'velez sarsfield', 'flores',
-  'parque patricios', 'villa crespo', 'boedo', 'almagro', 'villa urquiza',
-  'nuñez', 'palermo hollywood', 'palermo viejo', 'retiro', 'constitución',
-  'san telmo', 'monserrat', 'barracas',
-];
+  'buenos aires',
+  'la plata',
+  'mar del plata',
+  'quilmes',
+  'lomas de zamora',
+  'belgrano',
+  'palermo',
+  'recoleta',
+  'caballito',
+  'san isidro',
+  'avellaneda',
+  'lanús',
+  'morón',
+  'san justo',
+  'haedo',
+  'castelar',
+  'merlo',
+  'temperley',
+  'burzaco',
+  'adrogue',
+  'banfield',
+  'olivos',
+  'vicente lopez',
+  'tigre',
+  'san fernando',
+  'pilar',
+  'escobar',
+  'zarate',
+  'campana',
+  'lujan',
+  'carmen de areco',
+  'saladillo',
+  'chivilcoy',
+  'velez sarsfield',
+  'flores',
+  'parque patricios',
+  'villa crespo',
+  'boedo',
+  'almagro',
+  'villa urquiza',
+  'nuñez',
+  'palermo hollywood',
+  'palermo viejo',
+  'retiro',
+  'constitución',
+  'san telmo',
+  'monserrat',
+  'barracas',
+]
 
 function getProvince(ubicacion) {
-  if (!ubicacion) return 'Otra';
-  const lower = ubicacion.toLowerCase();
-  if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán';
-  if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires';
-  return 'Otra';
+  if (!ubicacion) return 'Otra'
+  const lower = ubicacion.toLowerCase()
+  if (tucumanLocalidades.some((loc) => lower.includes(loc))) return 'Tucumán'
+  if (buenosAiresLocalidades.some((loc) => lower.includes(loc))) return 'Buenos Aires'
+  return 'Otra'
 }
 
 export default function AdminList({ schema }) {
-  const navigate = useNavigate();
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedProvince, setSelectedProvince] = useState(null);
+  const navigate = useNavigate()
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [selectedProvince, setSelectedProvince] = useState(null)
 
-  const isPropiedades = schema.collection === 'propiedades';
+  const isPropiedades = schema.collection === 'propiedades'
 
   async function load() {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
     try {
       const data = schema.sortable
         ? await listAllOrdered(schema.collection, 'orden', 'desc')
-        : await listAll(schema.collection);
-      setItems(data);
+        : await listAll(schema.collection)
+      setItems(data)
     } catch {
-      setError('Error al cargar los datos.');
+      setError('Error al cargar los datos.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
-  useEffect(() => { load(); }, [schema.collection]);
+  useEffect(() => {
+    load()
+  }, [schema.collection])
 
   async function handleDelete(id, label) {
     const result = await Swal.fire({
@@ -68,24 +109,25 @@ export default function AdminList({ schema }) {
       confirmButtonText: 'Eliminar',
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#dc2626',
-    });
-    if (!result.isConfirmed) return;
+    })
+    if (!result.isConfirmed) return
     try {
-      await remove(schema.collection, id);
-      setItems((prev) => prev.filter((it) => it.id !== id));
-      Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
+      await remove(schema.collection, id)
+      setItems((prev) => prev.filter((it) => it.id !== id))
+      Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false })
     } catch {
-      Swal.fire({ title: 'Error al eliminar', icon: 'error' });
+      Swal.fire({ title: 'Error al eliminar', icon: 'error' })
     }
   }
 
-  const primaryField = schema.listColumns[0];
+  const primaryField = schema.listColumns[0]
 
-  const provinces = isPropiedades ? ['Tucumán', 'Buenos Aires', 'Otra'] : [];
+  const provinces = isPropiedades ? ['Tucumán', 'Buenos Aires', 'Otra'] : []
 
-  const visibleItems = isPropiedades && selectedProvince
-    ? items.filter((i) => getProvince(i.ubicacion) === selectedProvince)
-    : items;
+  const visibleItems =
+    isPropiedades && selectedProvince
+      ? items.filter((i) => getProvince(i.ubicacion) === selectedProvince)
+      : items
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -138,7 +180,9 @@ export default function AdminList({ schema }) {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-4">
           {error}
-          <button onClick={load} className="ml-4 underline text-sm">Reintentar</button>
+          <button onClick={load} className="ml-4 underline text-sm">
+            Reintentar
+          </button>
         </div>
       )}
 
@@ -146,7 +190,9 @@ export default function AdminList({ schema }) {
         <div className="text-center py-16 text-gray-400">
           No hay registros.{' '}
           {!selectedProvince && (
-            <Link to={`${schema.basePath}/nuevo`} className="underline">Crear el primero.</Link>
+            <Link to={`${schema.basePath}/nuevo`} className="underline">
+              Crear el primero.
+            </Link>
           )}
         </div>
       )}
@@ -154,7 +200,7 @@ export default function AdminList({ schema }) {
       {!loading && visibleItems.length > 0 && (
         <div className="flex flex-col gap-3">
           {visibleItems.map((item) => {
-            const label = item[primaryField] || item.id;
+            const label = item[primaryField] || item.id
             return (
               <div
                 key={item.id}
@@ -170,9 +216,15 @@ export default function AdminList({ schema }) {
                     />
                   )}
                   <div className="min-w-0">
-                    <p className="font-semibold text-gray-900 truncate">{label || '(sin título)'}</p>
+                    <p className="font-semibold text-gray-900 truncate">
+                      {label || '(sin título)'}
+                    </p>
                     <p className="text-xs text-gray-400 truncate">
-                      {schema.listColumns.slice(1).map((col) => item[col]).filter(Boolean).join(' · ')}
+                      {schema.listColumns
+                        .slice(1)
+                        .map((col) => item[col])
+                        .filter(Boolean)
+                        .join(' · ')}
                     </p>
                   </div>
                 </div>
@@ -191,10 +243,10 @@ export default function AdminList({ schema }) {
                   </button>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       )}
     </div>
-  );
+  )
 }

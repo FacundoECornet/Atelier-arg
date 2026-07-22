@@ -1,67 +1,67 @@
-import React from 'react';
-import { Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react'
+import { Disclosure } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const LOGO_URL =
-  'https://static.wixstatic.com/media/00602b_71e63b15dcb64d87af750db73320d966~mv2.png/v1/fill/w_288,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20atelier%20horizontal-02.png';
+  'https://static.wixstatic.com/media/00602b_71e63b15dcb64d87af750db73320d966~mv2.png/v1/fill/w_288,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo%20atelier%20horizontal-02.png'
 
 const navigation = [
   { name: 'Propiedades', to: '/propiedades', type: 'navigate' },
   { name: 'Noticias', to: '#noticias', type: 'scroll' },
   { name: 'Saber más', to: '#pasos', type: 'scroll' },
-];
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleLogoClick = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (location.pathname !== '/') {
-      navigate('/');
+      navigate('/')
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-  };
+  }
 
   const handleClick = (item) => (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (item.type === 'navigate') {
-      navigate(item.to);
-      return;
+      navigate(item.to)
+      return
     }
 
     if (item.to === '/') {
-      if (location.pathname !== '/') navigate('/');
-      return;
+      if (location.pathname !== '/') navigate('/')
+      return
     }
 
     if (item.to.startsWith('#')) {
       if (location.pathname === '/') {
-        const el = document.getElementById(item.to.substring(1));
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        const el = document.getElementById(item.to.substring(1))
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
       } else {
-        navigate('/');
+        navigate('/')
         setTimeout(() => {
-          const el = document.getElementById(item.to.substring(1));
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+          const el = document.getElementById(item.to.substring(1))
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
       }
     }
-  };
+  }
 
   const isActive = (item) => {
-    if (item.type === 'navigate') return location.pathname === item.to;
-    if (item.to === '/') return location.pathname === '/';
-    if (item.to.startsWith('#')) return location.pathname === '/';
-    return false;
-  };
+    if (item.type === 'navigate') return location.pathname === item.to
+    if (item.to === '/') return location.pathname === '/'
+    if (item.to.startsWith('#')) return location.pathname === '/'
+    return false
+  }
 
   return (
     <Disclosure
@@ -74,7 +74,11 @@ export default function Navbar() {
             {/* Desktop */}
             <div className="hidden sm:flex h-20 items-center justify-between">
               <div className="flex-shrink-0">
-                <a href="/" onClick={handleLogoClick} className="cursor-pointer hover:opacity-80 transition-opacity">
+                <a
+                  href="/"
+                  onClick={handleLogoClick}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                >
                   <img src={LOGO_URL} alt="Logo Atelier" className="h-16 w-auto" decoding="async" />
                 </a>
               </div>
@@ -90,7 +94,7 @@ export default function Navbar() {
                         isActive(item)
                           ? 'bg-black text-white'
                           : 'text-black hover:bg-black hover:text-white',
-                        'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer',
+                        'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer'
                       )}
                     >
                       {item.name}
@@ -113,7 +117,11 @@ export default function Navbar() {
             {/* Mobile */}
             <div className="sm:hidden flex h-16 items-center justify-between">
               <div className="flex items-center justify-start">
-                <a href="/" onClick={handleLogoClick} className="cursor-pointer hover:opacity-80 transition-opacity">
+                <a
+                  href="/"
+                  onClick={handleLogoClick}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                >
                   <img src={LOGO_URL} alt="Logo Atelier" className="h-12 w-auto" decoding="async" />
                 </a>
               </div>
@@ -142,7 +150,7 @@ export default function Navbar() {
                     isActive(item)
                       ? 'bg-black text-white'
                       : 'text-gray-700 hover:bg-black hover:text-white',
-                    'block px-4 py-3 rounded-md text-base font-medium transition-all duration-200 cursor-pointer',
+                    'block px-4 py-3 rounded-md text-base font-medium transition-all duration-200 cursor-pointer'
                   )}
                 >
                   {item.name}
@@ -161,5 +169,5 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
-  );
+  )
 }

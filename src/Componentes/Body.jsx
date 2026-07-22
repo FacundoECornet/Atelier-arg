@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import ModalTasacion from './Modal';
-import OficinasCarousel from './Nosotros';
-import pareja from '../Imagenes/pareja-modal.jpg';
+import React, { useState } from 'react'
+import ModalTasacion from './Modal'
+import OficinasCarousel from './Nosotros'
+import pareja from '../Imagenes/pareja-modal.jpg'
 
 const Body = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
   const handleScrollToContact = () => {
-    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
-  };
+    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -83,7 +83,7 @@ const Body = () => {
 
       <ModalTasacion showModal={showModal} handleCloseModal={() => setShowModal(false)} />
     </>
-  );
-};
+  )
+}
 
-export default Body;
+export default Body

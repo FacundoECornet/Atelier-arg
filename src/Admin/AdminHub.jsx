@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const cards = [
   {
@@ -20,7 +20,7 @@ const cards = [
     desc: 'Administrar los miembros del equipo.',
     icon: '👥',
   },
-];
+]
 
 export default function AdminHub() {
   return (
@@ -35,11 +35,13 @@ export default function AdminHub() {
             className="bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-3 hover:shadow-2xl hover:-translate-y-1 transition-all duration-200 group"
           >
             <span className="text-4xl">{c.icon}</span>
-            <span className="text-lg font-bold text-gray-900 group-hover:text-black">{c.label}</span>
+            <span className="text-lg font-bold text-gray-900 group-hover:text-black">
+              {c.label}
+            </span>
             <span className="text-sm text-gray-500">{c.desc}</span>
           </Link>
         ))}
       </div>
     </div>
-  );
+  )
 }

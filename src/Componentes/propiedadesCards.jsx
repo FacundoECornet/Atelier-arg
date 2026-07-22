@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { usePropiedades } from '../hooks/usePropiedades';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { usePropiedades } from '../hooks/usePropiedades'
 
 const PropertyList = () => {
-  const { propiedades: properties } = usePropiedades();
-  const [visibleCount, setVisibleCount] = useState(3);
-  const navigate = useNavigate();
-  const initialCount = 3;
+  const { propiedades: properties } = usePropiedades()
+  const [visibleCount, setVisibleCount] = useState(3)
+  const navigate = useNavigate()
+  const initialCount = 3
 
   const handleToggleProperties = () => {
     if (visibleCount < properties.length) {
-      setVisibleCount(properties.length);
+      setVisibleCount(properties.length)
     } else {
-      setVisibleCount(initialCount);
-      const container = document.getElementById('propiedades');
+      setVisibleCount(initialCount)
+      const container = document.getElementById('propiedades')
       if (container) {
-        container.scrollIntoView({ behavior: 'smooth' });
+        container.scrollIntoView({ behavior: 'smooth' })
       }
     }
-  };
+  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto" id="propiedades">
@@ -116,7 +116,7 @@ const PropertyList = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default PropertyList;
+export default PropertyList

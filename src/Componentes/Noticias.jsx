@@ -1,24 +1,22 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../Firebase';
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../Firebase'
 
 const Noticias = () => {
-  const [noticias, setNoticias] = useState([]);
+  const [noticias, setNoticias] = useState([])
 
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'Noticias'));
-        setNoticias(
-          querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
+        const querySnapshot = await getDocs(collection(db, 'Noticias'))
+        setNoticias(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
       } catch {
         // silencioso — sin datos simplemente no muestra la sección
       }
-    };
-    fetchNoticias();
-  }, []);
+    }
+    fetchNoticias()
+  }, [])
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl mx-auto" id="noticias">
@@ -73,7 +71,7 @@ const Noticias = () => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Noticias;
+export default Noticias
