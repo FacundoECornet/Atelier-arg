@@ -20,6 +20,9 @@ const AdminHub = lazy(() => import('./Admin/AdminHub.jsx'))
 const AdminList = lazy(() => import('./Admin/AdminList.jsx'))
 const AdminForm = lazy(() => import('./Admin/AdminForm.jsx'))
 
+import AuthGuard from './Auth/AuthGuard'
+import LoginPage from './Auth/LoginPage'
+import { AuthProvider } from './Auth/AuthContext'
 import { schemas } from './Admin/schemas.js'
 
 const AdminFallback = <div className="text-center py-20 text-gray-400">Cargando…</div>
@@ -27,7 +30,7 @@ const AdminFallback = <div className="text-center py-20 text-gray-400">Cargando�
 function Shell() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const isAdmin = pathname.startsWith('/admin')
+  const isAdmin = pathname.startsWith('/admin') || pathname === '/login'
 
   // Redirigir fragmentos hash antiguos (/#/ruta → /ruta)
   useEffect(() => {
@@ -82,14 +85,19 @@ function Shell() {
             }
           />
 
+          {/* Login — sin Navbar ni Footer */}
+          <Route path="/login" element={<LoginPage />} />
+
           {/* Panel admin — cargado de forma lazy */}
           <Route
             path="/admin"
             element={
               <ErrorBoundary section="Administración">
-                <Suspense fallback={AdminFallback}>
-                  <AdminLayout />
-                </Suspense>
+                <AuthGuard>
+                  <Suspense fallback={AdminFallback}>
+                    <AdminLayout />
+                  </Suspense>
+                </AuthGuard>
               </ErrorBoundary>
             }
           >
@@ -187,7 +195,9 @@ function Shell() {
 function App() {
   return (
     <Router>
-      <Shell />
+      <AuthProvider>
+        <Shell />
+      </AuthProvider>
     </Router>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth'
 import { schemas } from './schemas'
 
 const sections = [
@@ -10,6 +11,13 @@ const sections = [
 
 export default function AdminLayout() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    const auth = getAuth()
+    await signOut(auth)
+    navigate('/login')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -38,6 +46,12 @@ export default function AdminLayout() {
             )
           })}
         </nav>
+        <button
+          onClick={handleLogout}
+          className="text-xs text-gray-400 hover:text-red-400 transition-colors px-2"
+        >
+          Cerrar sesión
+        </button>
         <Link to="/" className="text-xs text-gray-400 hover:text-white transition-colors">
           ← Ver sitio
         </Link>
