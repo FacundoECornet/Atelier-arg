@@ -8,7 +8,7 @@ Four-phase improvement cycle for the Atelier Homes Argentina real estate site. P
 
 - [ ] **Phase 1: Foundation & Infrastructure** — BrowserRouter migration + code cleanup (no user-facing changes)
 - [ ] **Phase 2: Security Hardening** — Auth + Firestore rules + env vars + spam protection (atomic deploy)
-- [ ] **Phase 3: Blog System + SEO** — Blog editor + public pages + build-time HTML + meta tags + sitemap
+- [x] **Phase 3: Blog System + SEO** — Blog editor + public pages + build-time HTML + meta tags + sitemap (completed 2026-07-29)
 - [ ] **Phase 4: Feature Polish** — Property sorting, team modals, structured data, code splitting
 
 ## Phase Details
@@ -66,7 +66,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — Dependencies fix + admin blog authoring backend (schema, field components, slug generation)
 - [x] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + App.jsx routes + HelmetProvider + Noticias.jsx rewrite
-- [ ] 03-03-PLAN.md — SEO foundation (per-page meta tags, postbuild static HTML, sitemap.xml, robots.txt, semantic HTML audit)
+- [x] 03-03-PLAN.md — SEO foundation (per-page meta tags, postbuild static HTML, sitemap.xml, robots.txt, semantic HTML audit)
 **UI hint**: yes
 
 ### Phase 4: Feature Polish
@@ -84,7 +84,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Dependencies fix + admin blog fields (RichText, Date, Boolean)
-- [ ] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + homepage Noticias rewire
+- [x] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + homepage Noticias rewire
 - [ ] 03-03-PLAN.md — SEO foundation (meta tags, static HTML, sitemap, semantic HTML)
 **UI hint**: yes
 
@@ -97,5 +97,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 3/3 | Complete | 2026-07-22 |
 | 2. Security Hardening | 2/3 | In Progress|  |
-| 3. Blog System + SEO | 2/3 | In Progress|  |
+| 3. Blog System + SEO | 3/3 | Complete   | 2026-07-29 |
 | 4. Feature Polish | 0/0 | Not started | - |
