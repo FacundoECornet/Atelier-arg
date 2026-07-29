@@ -1,22 +1,37 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { collection, getDocs } from 'firebase/firestore'
+import { useNavigate, Link } from 'react-router-dom'
+import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState([])
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'Noticias'))
+        const q = query(
+          collection(db, 'Noticias'),
+          where('publicado', '==', true),
+          orderBy('fecha', 'desc'),
+          limit(3)
+        )
+        const querySnapshot = await getDocs(q)
         setNoticias(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
       } catch {
         // silencioso — sin datos simplemente no muestra la sección
+      } finally {
+        setLoading(false)
       }
     }
     fetchNoticias()
   }, [])
+
+  // Ocultar sección durante carga o si no hay artículos publicados
+  if (loading) return null
+  if (noticias.length === 0) return null
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl mx-auto" id="noticias">
@@ -51,7 +66,7 @@ const Noticias = () => {
             </div>
 
             <button
-              onClick={() => window.open(noticia.url, '_blank')}
+              onClick={() => navigate('/blog/' + noticia.slug)}
               className="group relative w-[50px] h-[50px] rounded-full bg-neutral-900 border-none font-semibold flex items-center justify-center shadow-[0px_0px_0px_4px_rgba(180,160,255,0.25)] cursor-pointer transition-all duration-300 overflow-hidden hover:w-[140px] hover:rounded-[50px] hover:bg-neutral-800 mx-auto mt-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-900"
             >
               <svg
@@ -70,6 +85,13 @@ const Noticias = () => {
           </li>
         ))}
       </ul>
+
+      <Link
+        to="/blog"
+        className="block text-center mt-6 text-sm font-medium text-gray-600 hover:text-black transition-colors"
+      >
+        Ver todas las novedades →
+      </Link>
     </div>
   )
 }

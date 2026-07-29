@@ -20,10 +20,14 @@ const AdminHub = lazy(() => import('./Admin/AdminHub.jsx'))
 const AdminList = lazy(() => import('./Admin/AdminList.jsx'))
 const AdminForm = lazy(() => import('./Admin/AdminForm.jsx'))
 
+import BlogList from './Blog/BlogList.jsx'
+import BlogArticle from './Blog/BlogArticle.jsx'
+
 import AuthGuard from './Auth/AuthGuard'
 import LoginPage from './Auth/LoginPage'
 import { AuthProvider } from './Auth/AuthContext'
 import { schemas } from './Admin/schemas.js'
+import { HelmetProvider } from 'react-helmet-async'
 
 const AdminFallback = <div className="text-center py-20 text-gray-400">Cargando…</div>
 
@@ -81,6 +85,24 @@ function Shell() {
             element={
               <ErrorBoundary section="Propiedades">
                 <AllProperties />
+              </ErrorBoundary>
+            }
+          />
+
+          {/* Blog — páginas públicas */}
+          <Route
+            path="/blog"
+            element={
+              <ErrorBoundary section="Blog">
+                <BlogList />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="/blog/:slug"
+            element={
+              <ErrorBoundary section="Blog">
+                <BlogArticle />
               </ErrorBoundary>
             }
           />
@@ -196,7 +218,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Shell />
+        <HelmetProvider>
+          <Shell />
+        </HelmetProvider>
       </AuthProvider>
     </Router>
   )
