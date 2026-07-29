@@ -581,7 +581,7 @@ Netlify redirect rule processing: static files in the publish directory are serv
 - `react-helmet` (the non-async version): Deprecated, doesn't support React 18 concurrent mode. Use `react-helmet-async` per locked decision.
 - Direct `document.title` manipulation: Not declarative, doesn't clean up on unmount, doesn't work for nested routes. Replaced by react-helmet-async.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Firebase service account permissions**
    - What we know: Script needs Firestore read access (Noticias + propiedades collections). Service account created in Firebase Console → IAM.

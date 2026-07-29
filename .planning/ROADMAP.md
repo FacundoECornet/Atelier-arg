@@ -80,7 +80,12 @@ Plans:
   3. Property detail page source includes JSON-LD structured data (`schema.org/RealEstateListing`) with price, location, and images
   4. `Modal.jsx` (715-line valuation wizard) loads lazily — the initial page bundle excludes it, and it loads only when the user opens the tasación modal
   5. Blog routes (`BlogList`, `BlogArticle`) load lazily — the initial page bundle excludes them, and they load only when the user navigates to blog pages
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Dependencies fix + admin blog fields (RichText, Date, Boolean)
+- [ ] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + homepage Noticias rewire
+- [ ] 03-03-PLAN.md — SEO foundation (meta tags, static HTML, sitemap, semantic HTML)
 **UI hint**: yes
 
 ## Progress
