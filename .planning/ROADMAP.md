@@ -64,8 +64,8 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Dependencies fix + admin blog authoring backend (schema, field components, slug generation)
-- [ ] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + App.jsx routes + HelmetProvider + Noticias.jsx rewrite
+- [x] 03-01-PLAN.md — Dependencies fix + admin blog authoring backend (schema, field components, slug generation)
+- [x] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + App.jsx routes + HelmetProvider + Noticias.jsx rewrite
 - [ ] 03-03-PLAN.md — SEO foundation (per-page meta tags, postbuild static HTML, sitemap.xml, robots.txt, semantic HTML audit)
 **UI hint**: yes
 
@@ -83,7 +83,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Dependencies fix + admin blog fields (RichText, Date, Boolean)
+- [x] 03-01-PLAN.md — Dependencies fix + admin blog fields (RichText, Date, Boolean)
 - [ ] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + homepage Noticias rewire
 - [ ] 03-03-PLAN.md — SEO foundation (meta tags, static HTML, sitemap, semantic HTML)
 **UI hint**: yes
@@ -97,5 +97,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 3/3 | Complete | 2026-07-22 |
 | 2. Security Hardening | 2/3 | In Progress|  |
-| 3. Blog System + SEO | 0/0 | Not started | - |
+| 3. Blog System + SEO | 2/3 | In Progress|  |
 | 4. Feature Polish | 0/0 | Not started | - |

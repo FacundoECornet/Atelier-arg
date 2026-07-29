@@ -21,9 +21,9 @@ Phase 3 delivers a functional blog system with SEO foundation. Admin creates, ed
 
 ### Build-Time HTML Generation
 - **D-05:** Generate static HTML for blog articles at build time via a Firebase Admin SDK Node script. Run as a `postbuild` hook in package.json (after `vite build`). Script reads all published articles from Firestore, generates `dist/blog/:slug/index.html` files with full article content, meta tags, and OG tags.
-- **D-06:** Firebase service account credentials provided as base64-encoded env var (`FIREBASE_SERVICE_ACCOUNT_B64`) in Netlify. Build script decodes to a temp file.
+- **D-06 (AMENDED 2026-07-29):** Firebase service account credentials provided as base64-encoded env var (`FIREBASE_SERVICE_ACCOUNT_B64`) in **local `.env` file** (not Netlify). Build runs locally before FTP deploy to Hostinger. Build script decodes to a temp file in-memory.
 - **D-07:** Static HTML generated for blog articles only. Properties stay client-rendered (out of scope for Phase 3).
-- **D-08:** Netlify serves static files first (`dist/blog/:slug/index.html` for direct/crawler visits). React Router handles `/blog/:slug` for SPA navigation. Static files get `<link rel="canonical">` pointing to themselves.
+- **D-08 (AMENDED 2026-07-29):** Production hosting is **Hostinger (Apache)** with static file serving. Apache auto-serves `index.html` within directories (`/blog/:slug/` → `dist/blog/:slug/index.html`). SPA fallback via `.htaccess`: `RewriteRule ^ index.html [L]` for non-file/non-directory routes. Static files get `<link rel="canonical">` pointing to `https://atelierarg.com/...`. Domain confirmed: `atelierarg.com`. Netlify used for demo only.
 
 ### Slug Strategy & Data Migration
 - **D-09:** Slug auto-generated from `titulo` on create (lowercase, spaces→hyphens, strip Spanish accents). Editable field in admin form — Fran can override before publish. On title edit, slug does NOT auto-update (prevents broken links).
