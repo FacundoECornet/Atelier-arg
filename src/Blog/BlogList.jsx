@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 import { handleImgFallback } from '../utils/imgFallback'
+import { Helmet } from 'react-helmet-async'
 
 const PLACEHOLDER = '/placeholder-property.jpg'
 
@@ -53,8 +54,18 @@ const BlogList = () => {
   }
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-10">Novedades</h1>
+    <>
+      <Helmet>
+        <title>Novedades | Atelier Homes Argentina</title>
+        <meta name="description" content="Últimas novedades y artículos de Atelier Homes Argentina" />
+        <meta property="og:title" content="Novedades | Atelier Homes Argentina" />
+        <meta property="og:description" content="Últimas novedades y artículos de Atelier Homes Argentina" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://atelierhomes.com.ar/blog" />
+        <link rel="canonical" href="https://atelierhomes.com.ar/blog" />
+      </Helmet>
+      <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-10">Novedades</h1>
 
       {articles.length === 0 ? (
         <div className="text-center py-16">
@@ -105,7 +116,8 @@ const BlogList = () => {
           ))}
         </div>
       )}
-    </section>
+      </section>
+    </>
   )
 }
 

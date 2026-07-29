@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 import { handleImgFallback } from '../utils/imgFallback'
+import { Helmet } from 'react-helmet-async'
 
 const PLACEHOLDER = '/placeholder-property.jpg'
 
@@ -61,6 +62,19 @@ const PropiedadesInfo = () => {
   if (error) return <div className="text-center text-red-500 py-20">{error}</div>
 
   return (
+    <>
+      {property && (
+        <Helmet>
+          <title>{property.Nombre} | Atelier Homes Argentina</title>
+          <meta name="description" content={property.caracteristicas?.substring(0, 160) || `Propiedad: ${property.Nombre} en ${property.ubicacion || 'Argentina'}`} />
+          <meta property="og:title" content={`${property.Nombre} | Atelier Homes Argentina`} />
+          <meta property="og:description" content={property.caracteristicas?.substring(0, 160) || `Propiedad en ${property.ubicacion || 'Argentina'}`} />
+          <meta property="og:image" content={property.img || ''} />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={`https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`} />
+          <link rel="canonical" href={`https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`} />
+        </Helmet>
+      )}
     <div className="w-full min-h-screen bg-gray-50">
       {/* Hero */}
       <div className="relative w-full h-80 md:h-[450px] overflow-hidden shadow-xl">
@@ -200,6 +214,7 @@ const PropiedadesInfo = () => {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

@@ -27,7 +27,7 @@ import AuthGuard from './Auth/AuthGuard'
 import LoginPage from './Auth/LoginPage'
 import { AuthProvider } from './Auth/AuthContext'
 import { schemas } from './Admin/schemas.js'
-import { HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider, Helmet } from 'react-helmet-async'
 
 const AdminFallback = <div className="text-center py-20 text-gray-400">Cargando…</div>
 
@@ -54,20 +54,32 @@ function Shell() {
           <Route
             path="/"
             element={
-              <div className="flex flex-col">
-                <ErrorBoundary section="Inicio">
-                  <Body />
-                </ErrorBoundary>
-                <ErrorBoundary section="Equipo">
-                  <Equipo />
-                </ErrorBoundary>
-                <Pasos />
-                <ErrorBoundary section="Propiedades">
-                  <PropertyList />
-                </ErrorBoundary>
-                <Formulario />
-                <Noticias />
-              </div>
+              <>
+                <Helmet>
+                  <title>Atelier Homes Argentina — Propiedades de lujo en Tucumán y Buenos Aires</title>
+                  <meta name="description" content="Descubrí propiedades exclusivas en Tucumán y Buenos Aires. Atelier Homes Argentina — inmobiliaria de lujo con propiedades premium." />
+                  <meta property="og:title" content="Atelier Homes Argentina — Propiedades de lujo" />
+                  <meta property="og:description" content="Descubrí propiedades exclusivas en Tucumán y Buenos Aires. Inmobiliaria de lujo con propiedades premium." />
+                  <meta property="og:type" content="website" />
+                  <meta property="og:url" content="https://atelierhomes.com.ar/" />
+                  <meta property="og:locale" content="es_AR" />
+                  <link rel="canonical" href="https://atelierhomes.com.ar/" />
+                </Helmet>
+                <div className="flex flex-col">
+                  <ErrorBoundary section="Inicio">
+                    <Body />
+                  </ErrorBoundary>
+                  <ErrorBoundary section="Equipo">
+                    <Equipo />
+                  </ErrorBoundary>
+                  <Pasos />
+                  <ErrorBoundary section="Propiedades">
+                    <PropertyList />
+                  </ErrorBoundary>
+                  <Formulario />
+                  <Noticias />
+                </div>
+              </>
             }
           />
 
