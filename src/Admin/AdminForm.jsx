@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../Firebase'
 import { getOne, create, update, getNextOrden } from './firestoreApi'
+import slugify from 'slugify'
 import TextField from './fields/TextField'
 import TextAreaField from './fields/TextAreaField'
 import ArrayUrlField from './fields/ArrayUrlField'
 
 function buildEmpty(fields) {
   return fields.reduce((acc, f) => {
-    acc[f.key] = f.type === 'arrayUrl' ? [] : ''
+    if (f.type === 'arrayUrl') acc[f.key] = []
+    else if (f.type === 'date') acc[f.key] = new Date().toISOString().split('T')[0]
+    else if (f.type === 'bool') acc[f.key] = false
+    else if (f.type === 'richText') acc[f.key] = ''
+    else acc[f.key] = ''
     return acc
   }, {})
 }
@@ -56,6 +63,38 @@ export default function AdminForm({ schema, mode }) {
         payload[f.key] = (payload[f.key] || []).map((u) => u.trim()).filter(Boolean)
       }
     })
+
+    // Auto-generate slug on create (not on edit) if missing
+    if (!isEdit && schema.collection === 'Noticias' && !payload.slug) {
+      const baseSlug = slugify(payload.titulo, { lower: true, strict: true })
+      const q = query(
+        collection(db, 'Noticias'),
+        where('slug', '>=', baseSlug),
+        where('slug', '<=', baseSlug + '\uf8ff')
+      )
+      const existing = await getDocs(q)
+      if (existing.empty) {
+        payload.slug = baseSlug
+      } else {
+        const slugs = existing.docs.map((d) => d.data().slug)
+        let maxNum = 1
+        slugs.forEach((s) => {
+          const match = s.match(new RegExp(`^${baseSlug}-(\\d+)$`))
+          if (match) {
+            const n = parseInt(match[1], 10)
+            if (n >= maxNum) maxNum = n + 1
+          }
+        })
+        // If the base slug itself is taken (no suffix), start at 2
+        if (slugs.includes(baseSlug)) {
+          payload.slug = baseSlug + '-2'
+        } else if (maxNum > 1) {
+          payload.slug = baseSlug + '-' + maxNum
+        } else {
+          payload.slug = baseSlug
+        }
+      }
+    }
 
     try {
       if (isEdit) {
