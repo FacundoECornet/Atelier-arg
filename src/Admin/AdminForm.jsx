@@ -8,6 +8,9 @@ import slugify from 'slugify'
 import TextField from './fields/TextField'
 import TextAreaField from './fields/TextAreaField'
 import ArrayUrlField from './fields/ArrayUrlField'
+import RichTextField from './fields/RichTextField'
+import DateField from './fields/DateField'
+import BooleanField from './fields/BooleanField'
 
 function buildEmpty(fields) {
   return fields.reduce((acc, f) => {
@@ -147,6 +150,9 @@ export default function AdminForm({ schema, mode }) {
           const props = { field, value: formData[field.key], onChange: handleChange }
           if (field.type === 'textarea') return <TextAreaField key={field.key} {...props} />
           if (field.type === 'arrayUrl') return <ArrayUrlField key={field.key} {...props} />
+          if (field.type === 'richText') return <RichTextField key={field.key} {...props} />
+          if (field.type === 'date') return <DateField key={field.key} {...props} />
+          if (field.type === 'bool') return <BooleanField key={field.key} {...props} />
           return <TextField key={field.key} {...props} />
         })}
 
