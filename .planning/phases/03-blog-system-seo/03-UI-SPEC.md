@@ -52,7 +52,7 @@ Exceptions: none — existing Tailwind default patterns cover all blog component
 | Role | Size | Weight | Line Height | Tailwind Class |
 |------|------|--------|-------------|----------------|
 | Body | 16px | 400 (normal) | 1.5 | `text-base` |
-| Label | 14px | 600 (semibold) | 1.4 | `text-sm font-semibold` |
+| Label | 14px | 700 (bold) | 1.4 | `text-sm font-bold` |
 | Heading | 24px | 700 (bold) | 1.2 | `text-2xl font-bold` |
 | Display | 36px | 700 (bold) | 1.2 | `text-4xl font-bold` |
 
@@ -64,7 +64,7 @@ Exceptions: none — existing Tailwind default patterns cover all blog component
 | Article date, metadata | Label | Gray-600 text |
 | Section titles, article titles | Heading | line-clamp-2 for cards |
 | Hero title on article detail | Display | Centered, white overlay |
-| Admin field labels | Label | text-sm font-semibold text-gray-700 |
+| Admin field labels | Label | text-sm font-bold text-gray-700 |
 | Card headings (blog list) | Heading | Card title, subheading level |
 | "Ver más" button text | Label | 13px (animated, existing Noticias) |
 
