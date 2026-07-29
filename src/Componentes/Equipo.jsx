@@ -44,11 +44,12 @@ export default function Equipo() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold mb-6 text-center mt-12">Nuestro equipo</h1>
-      <div className="container mx-auto px-4 py-8">
+      <section aria-label="Equipo" className="w-full">
+        <h1 className="text-3xl font-bold mb-6 text-center mt-12">Nuestro equipo</h1>
+        <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {teamMembers.map((member) => (
-            <div
+            <article
               key={member.id}
               className="relative group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center w-full max-w-xs mx-auto cursor-pointer transform transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
               style={{ aspectRatio: '3 / 4' }}
@@ -75,10 +76,11 @@ export default function Equipo() {
                   )}
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
-      </div>
+        </div>
+      </section>
     </>
   )
 }

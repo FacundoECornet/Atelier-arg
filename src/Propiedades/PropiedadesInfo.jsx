@@ -75,7 +75,7 @@ const PropiedadesInfo = () => {
           <link rel="canonical" href={`https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`} />
         </Helmet>
       )}
-    <div className="w-full min-h-screen bg-gray-50">
+    <article className="w-full min-h-screen bg-gray-50">
       {/* Hero */}
       <div className="relative w-full h-80 md:h-[450px] overflow-hidden shadow-xl">
         <img
@@ -213,7 +213,7 @@ const PropiedadesInfo = () => {
           </button>
         </div>
       </section>
-    </div>
+    </article>
     </>
   )
 }

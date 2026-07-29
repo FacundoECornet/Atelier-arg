@@ -31,7 +31,7 @@ const Body = () => {
       </div>
 
       {/* Sección de venta */}
-      <div className="w-full bg-white py-16">
+      <section aria-label="Venta" className="w-full bg-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
             <div className="flex flex-col lg:flex-row items-center min-h-[500px]">
@@ -79,7 +79,7 @@ const Body = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <ModalTasacion showModal={showModal} handleCloseModal={() => setShowModal(false)} />
     </>

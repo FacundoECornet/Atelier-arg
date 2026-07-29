@@ -124,13 +124,13 @@ const AllProperties = () => {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pt-32 pb-12 max-w-7xl mx-auto">
+    <section className="px-4 sm:px-6 lg:px-8 pt-32 pb-12 max-w-7xl mx-auto" aria-label="Todas las propiedades">
       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-8 text-center scroll-mt-32">
         Todas las Propiedades
       </h2>
 
       {/* Filtro por ubicación */}
-      <div className="flex justify-center gap-4 mb-8">
+      <nav aria-label="Filtrar por provincia" className="flex justify-center gap-4 mb-8">
         {['Tucumán', 'Buenos Aires'].map((loc) => (
           <button
             key={loc}
@@ -144,7 +144,7 @@ const AllProperties = () => {
             {loc}
           </button>
         ))}
-      </div>
+      </nav>
 
       {filteredProperties.length === 0 && (
         <div className="text-center py-12">
@@ -158,7 +158,7 @@ const AllProperties = () => {
         {filteredProperties.map((property) => {
           const formattedPrice = formatPrice(property.precio)
           return (
-            <div
+            <article
               key={property.id}
               onClick={() => handlePropertyClick(property.id)}
               className="cursor-pointer group bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300"
@@ -195,11 +195,11 @@ const AllProperties = () => {
                   {property.caracteristicas || 'Sin características disponibles'}
                 </p>
               </div>
-            </div>
+            </article>
           )
         })}
       </div>
-    </div>
+    </section>
   )
 }
 

@@ -21,7 +21,7 @@ const PropertyList = () => {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto" id="propiedades">
+    <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl mx-auto" id="propiedades" aria-label="Propiedades destacadas">
       {/* Título principal */}
       <div className="text-center mb-12 sm:mb-16">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
@@ -42,7 +42,7 @@ const PropertyList = () => {
               </div>
             ))
           : properties.slice(0, visibleCount).map((property) => (
-              <div
+              <article
                 key={property.id}
                 className="group bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300"
               >
@@ -93,7 +93,7 @@ const PropertyList = () => {
                     </svg>
                   </button>
                 </div>
-              </div>
+              </article>
             ))}
       </div>
 
@@ -115,7 +115,7 @@ const PropertyList = () => {
           </button>
         </div>
       )}
-    </div>
+    </section>
   )
 }
 
