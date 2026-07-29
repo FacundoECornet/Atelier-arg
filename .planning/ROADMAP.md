@@ -61,7 +61,12 @@ Plans:
   4. `curl https://site.com/blog/article-slug` returns full HTML with article content, `<title>`, `<meta description>`, and Open Graph tags in page source
   5. `sitemap.xml` includes all property detail pages and all published blog articles; `robots.txt` points to the sitemap
   6. Homepage, property detail, blog list, and blog article pages use semantic HTML (`<main>`, `<article>`, `<nav>`, `<section>`) and each has unique `<title>` and `<meta description>` tags
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Dependencies fix + admin blog authoring backend (schema, field components, slug generation)
+- [ ] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + App.jsx routes + HelmetProvider + Noticias.jsx rewrite
+- [ ] 03-03-PLAN.md — SEO foundation (per-page meta tags, postbuild static HTML, sitemap.xml, robots.txt, semantic HTML audit)
 **UI hint**: yes
 
 ### Phase 4: Feature Polish
