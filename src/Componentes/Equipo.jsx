@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 import { handleImgFallback } from '../utils/imgFallback'
+import TeamMemberModal from './TeamMemberModal'
 
 export default function Equipo() {
   const [teamMembers, setTeamMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedMember, setSelectedMember] = useState(null)
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -51,6 +53,7 @@ export default function Equipo() {
           {teamMembers.map((member) => (
             <article
               key={member.id}
+              onClick={() => setSelectedMember(member)}
               className="relative group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center w-full max-w-xs mx-auto cursor-pointer transform transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
               style={{ aspectRatio: '3 / 4' }}
             >
@@ -81,6 +84,10 @@ export default function Equipo() {
         </div>
         </div>
       </section>
+
+      {selectedMember && (
+        <TeamMemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
+      )}
     </>
   )
 }
