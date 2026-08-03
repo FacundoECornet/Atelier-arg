@@ -542,22 +542,22 @@ const sortedProperties = sortOrder === 'newest'
 | A4 | Blog components (BlogList, BlogArticle) were created in Phase 3 and are functional | Lazy Loading | Phase 4 depends on Phase 3 completion — if blog components don't exist yet, lazy loading changes are no-op |
 | A5 | `react-helmet-async` Helmet component supports `<script>` tag injection for JSON-LD | JSON-LD | If Helmet strips script tags (unlikely, it supports them), fall back to direct DOM injection via `useEffect` + `document.head.appendChild` |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does `fechaIngreso` exist in current Firestore documents?**
    - What we know: Field is not in schemas.js, not found in codebase grep. Research ARCHITECTURE.md recommends adding it. Some documents may have it from manual entry.
    - What's unclear: How many existing properties have the field, and with what values.
-   - Recommendation: Planner should add a Wave 0 task to query Firestore for `fechaIngreso` existence. If missing, add backfill task to plan.
+   - **(RESOLVED 2026-08-03):** Plan 04-01 Task 1 includes a one-time backfill script (`scripts/backfill-fechaIngreso.mjs`) that queries all `propiedades` documents, identifies any missing `fechaIngreso`, and sets it from the document's Firestore `createTime` (fallback `"2024-01-01"`). The script runs as part of Task 1 verification. This guarantees all documents have the field before the `orderBy` change goes live.
 
 2. **Sort toggle: newest/oldest or also keep 'destacados' (orden)?**
    - What we know: D-05 says "newest/oldest sort toggle." D-06 defines newest = `orderBy('fechaIngreso', 'desc')`, oldest = `asc`. The old `orden` field is for manual ordering.
    - What's unclear: Should the toggle include three options (Destacados / Más recientes / Más antiguos) or just two? CONTEXT says newest/oldest. Research ARCHITECTURE.md mentions three options.
-   - Recommendation: Follow CONTEXT D-05 (newest/oldest only). The `orden` field was for drag-and-drop (now removed). Keep it simple.
+   - **(RESOLVED 2026-08-03):** Follow CONTEXT D-05 — two options only (newest/oldest). The `orden` field was for drag-and-drop (dnd-kit removed in Phase 1). Plan 04-01 Task 2 implements a two-option `<select>` with "Más recientes" / "Más antiguos". Three-option "Destacados" variant is out of scope.
 
 3. **JSON-LD `priceCurrency`: USD or ARS?**
    - What we know: `PropiedadesInfo.jsx` shows prices as "US${price}". Properties are listed in USD.
    - What's unclear: Whether the business lists any properties in ARS.
-   - Recommendation: Use "USD" as default. If properties have a currency field later, switch to dynamic value. Document this assumption.
+   - **(RESOLVED 2026-08-03):** Use `"USD"` as static value. All property prices in the current codebase are displayed with `US$` prefix (verified: `PropiedadesInfo.jsx` line 153). No ARS properties exist. Plan 04-03 Task 3 encodes `"priceCurrency": "USD"` in the JSON-LD block.
 
 ## Environment Availability
 
