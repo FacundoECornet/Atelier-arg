@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 
 const Noticias = () => {
@@ -12,13 +12,10 @@ const Noticias = () => {
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const q = query(
-          collection(db, 'Noticias'),
-          where('publicado', '==', true)
-        )
-        const querySnapshot = await getDocs(q)
+        const querySnapshot = await getDocs(collection(db, 'Noticias'))
         const docs = querySnapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((n) => n.publicado === true || n.publicado === 'true')
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
           .slice(0, 3)
         setNoticias(docs)

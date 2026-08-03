@@ -42,7 +42,7 @@ const TeamMemberModal = ({ member, onClose }) => {
           )}
           {member.telefono && (
             <a
-              href={`https://wa.me/${member.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('¡Hola! Quisiera más información')}`}
+              href={`https://wa.me/${member.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Buenas! Quisiera contactarme con el equipo de Atelier Homes por una consulta')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors text-center no-underline flex items-center justify-center gap-2"
