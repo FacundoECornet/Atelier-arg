@@ -73,6 +73,31 @@ const PropiedadesInfo = () => {
           <meta property="og:type" content="website" />
           <meta property="og:url" content={`https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`} />
           <link rel="canonical" href={`https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`} />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'RealEstateListing',
+              name: property.Nombre,
+              url: `https://atelierhomes.com.ar/propiedades/${property.codigo || property.id}`,
+              image: property.img || '',
+              description: property.caracteristicas?.substring(0, 160) || '',
+              datePosted: property.fechaIngreso || '',
+              offers: {
+                '@type': 'Offer',
+                price: property.precio?.toString() || '0',
+                priceCurrency: 'USD'
+              },
+              location: {
+                '@type': 'Place',
+                address: {
+                  '@type': 'PostalAddress',
+                  streetAddress: property.ubicacion || '',
+                  addressLocality: property.ubicacion || '',
+                  addressRegion: 'Tucumán'
+                }
+              }
+            })}
+          </script>
         </Helmet>
       )}
     <article className="w-full min-h-screen bg-gray-50">
