@@ -125,8 +125,8 @@ RewriteRule ^ index.html [L]`
 async function main() {
   const b64 = process.env.FIREBASE_SERVICE_ACCOUNT_B64
   if (!b64) {
-    console.error('FIREBASE_SERVICE_ACCOUNT_B64 not set — skipping static HTML generation')
-    process.exit(1)
+    console.warn('FIREBASE_SERVICE_ACCOUNT_B64 not set — skipping static HTML generation (build OK)')
+    process.exit(0)
   }
 
   const serviceAccount = JSON.parse(
