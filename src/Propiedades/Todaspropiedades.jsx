@@ -10,6 +10,7 @@ const AllProperties = () => {
   const { propiedades, loading, error } = usePropiedades()
   const [filteredProperties, setFilteredProperties] = useState([])
   const [selectedLocation, setSelectedLocation] = useState('Tucumán')
+  const [sortOrder, setSortOrder] = useState('newest')
   const navigate = useNavigate()
 
   const getProvince = (ubicacion) => {
@@ -81,8 +82,9 @@ const AllProperties = () => {
   }
 
   useEffect(() => {
-    setFilteredProperties(propiedades.filter((p) => getProvince(p.ubicacion) === selectedLocation))
-  }, [propiedades, selectedLocation])
+    const filtered = propiedades.filter((p) => getProvince(p.ubicacion) === selectedLocation)
+    setFilteredProperties(sortOrder === 'oldest' ? [...filtered].reverse() : filtered)
+  }, [propiedades, selectedLocation, sortOrder])
 
   const filterByLocation = (location) => {
     setSelectedLocation(location)
@@ -144,6 +146,15 @@ const AllProperties = () => {
             {loc}
           </button>
         ))}
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          aria-label="Ordenar por fecha de ingreso"
+          className="px-4 py-2 rounded-full border border-gray-300 bg-white text-black transition-all cursor-pointer"
+        >
+          <option value="newest">Más recientes</option>
+          <option value="oldest">Más antiguos</option>
+        </select>
       </nav>
 
       {filteredProperties.length === 0 && (
