@@ -106,3 +106,11 @@ None - no external service configuration required.
 ---
 *Phase: 04-feature-polish*
 *Completed: 2026-08-03*
+
+## Self-Check: PASSED
+
+- FOUND: src/Componentes/Body.jsx, src/App.jsx, src/Propiedades/PropiedadesInfo.jsx, 04-03-SUMMARY.md
+- Commits verified: f01c710 (Task 1), 97c60af (Task 2), 5d2243d (Task 3), ad843bc (metadata)
+- `npm run build` succeeds; separate chunks for Modal, BlogList, BlogArticle
+- JSON-LD serialized output: no null/undefined values
+- No stubs introduced (PLACEHOLDER constant pre-existing)
