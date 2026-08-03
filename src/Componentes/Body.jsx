@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import ModalTasacion from './Modal'
+import React, { useState, lazy, Suspense } from 'react'
 import OficinasCarousel from './Nosotros'
 import pareja from '../Imagenes/pareja-modal.jpg'
+
+const ModalTasacion = lazy(() => import('./Modal'))
 
 const Body = () => {
   const [showModal, setShowModal] = useState(false)
@@ -81,7 +82,11 @@ const Body = () => {
         </div>
       </section>
 
-      <ModalTasacion showModal={showModal} handleCloseModal={() => setShowModal(false)} />
+      {showModal && (
+        <Suspense fallback={<div className="text-center py-20 text-gray-400">Cargando…</div>}>
+          <ModalTasacion showModal={showModal} handleCloseModal={() => setShowModal(false)} />
+        </Suspense>
+      )}
     </>
   )
 }
