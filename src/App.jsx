@@ -20,8 +20,8 @@ const AdminHub = lazy(() => import('./Admin/AdminHub.jsx'))
 const AdminList = lazy(() => import('./Admin/AdminList.jsx'))
 const AdminForm = lazy(() => import('./Admin/AdminForm.jsx'))
 
-import BlogList from './Blog/BlogList.jsx'
-import BlogArticle from './Blog/BlogArticle.jsx'
+const BlogList = lazy(() => import('./Blog/BlogList.jsx'))
+const BlogArticle = lazy(() => import('./Blog/BlogArticle.jsx'))
 
 import AuthGuard from './Auth/AuthGuard'
 import LoginPage from './Auth/LoginPage'
@@ -106,7 +106,9 @@ function Shell() {
             path="/blog"
             element={
               <ErrorBoundary section="Blog">
-                <BlogList />
+                <Suspense fallback={AdminFallback}>
+                  <BlogList />
+                </Suspense>
               </ErrorBoundary>
             }
           />
@@ -114,7 +116,9 @@ function Shell() {
             path="/blog/:slug"
             element={
               <ErrorBoundary section="Blog">
-                <BlogArticle />
+                <Suspense fallback={AdminFallback}>
+                  <BlogArticle />
+                </Suspense>
               </ErrorBoundary>
             }
           />
