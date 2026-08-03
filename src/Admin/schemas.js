@@ -45,6 +45,7 @@ export const schemas = {
       { key: 'cargo', label: 'Cargo', type: 'text', required: false },
       { key: 'email', label: 'Email', type: 'text', required: false },
       { key: 'descripcion', label: 'Descripción', type: 'textarea', required: false },
+      { key: 'telefono', label: 'Teléfono (WhatsApp)', type: 'text', required: false },
       { key: 'img', label: 'Foto (URL)', type: 'url', required: false },
     ],
   },

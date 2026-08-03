@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore'
+import { collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from '../Firebase'
 
 const Noticias = () => {
@@ -14,12 +14,14 @@ const Noticias = () => {
       try {
         const q = query(
           collection(db, 'Noticias'),
-          where('publicado', '==', true),
-          orderBy('fecha', 'desc'),
-          limit(3)
+          where('publicado', '==', true)
         )
         const querySnapshot = await getDocs(q)
-        setNoticias(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+        const docs = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+          .slice(0, 3)
+        setNoticias(docs)
       } catch {
         // silencioso — sin datos simplemente no muestra la sección
       } finally {
