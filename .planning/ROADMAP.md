@@ -83,9 +83,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [x] 03-01-PLAN.md — Dependencies fix + admin blog fields (RichText, Date, Boolean)
-- [x] 03-02-PLAN.md — Public blog pages (BlogList, BlogArticle) + homepage Noticias rewire
-- [ ] 03-03-PLAN.md — SEO foundation (meta tags, static HTML, sitemap, semantic HTML)
+- [ ] 04-01-PLAN.md — Property sorting by fechaIngreso + admin schema update + backfill
+- [ ] 04-02-PLAN.md — TeamMemberModal component + Equipo.jsx click handler
+- [ ] 04-03-PLAN.md — Lazy loading (Modal + blog routes) + JSON-LD structured data
 **UI hint**: yes
 
 ## Progress
@@ -98,4 +98,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation & Infrastructure | 3/3 | Complete | 2026-07-22 |
 | 2. Security Hardening | 2/3 | In Progress|  |
 | 3. Blog System + SEO | 3/3 | Complete   | 2026-07-29 |
-| 4. Feature Polish | 0/0 | Not started | - |
+| 4. Feature Polish | 0/3 | Planned | - |
