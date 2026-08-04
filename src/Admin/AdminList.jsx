@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { listAll, listAllOrdered, remove } from './firestoreApi'
+import { listAll, listAllOrdered, remove, bulkUpdateOrden } from './firestoreApi'
 import { hideImgOnError } from '../utils/imgFallback'
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable'
 
 const tucumanLocalidades = [
   'san miguel de tucuman',
@@ -72,6 +85,38 @@ function getProvince(ubicacion) {
   return 'Otra'
 }
 
+function SortableItem({ id, children }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id })
+
+  const style = {
+    ...(transform
+      ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+      : {}),
+    transition,
+    ...(isDragging ? { zIndex: 50 } : {}),
+  }
+
+  return (
+    <div ref={setNodeRef} style={style} className="relative">
+      <div
+        className="bg-white rounded-2xl shadow-xl p-4 flex items-center justify-between gap-4"
+        {...attributes}
+      >
+        <button
+          type="button"
+          {...listeners}
+          className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 shrink-0 touch-none select-none text-lg leading-none"
+          aria-label="Arrastrar para reordenar"
+        >
+          ⋮⋮
+        </button>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 export default function AdminList({ schema }) {
   const navigate = useNavigate()
   const [items, setItems] = useState([])
@@ -80,6 +125,11 @@ export default function AdminList({ schema }) {
   const [selectedProvince, setSelectedProvince] = useState(null)
 
   const isPropiedades = schema.collection === 'propiedades'
+  const isSortable = schema.sortable && !selectedProvince
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  )
 
   async function load() {
     setLoading(true)
@@ -99,6 +149,23 @@ export default function AdminList({ schema }) {
   useEffect(() => {
     load()
   }, [schema.collection])
+
+  async function handleDragEnd(event) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    setItems((prev) => {
+      const oldIndex = prev.findIndex((i) => i.id === active.id)
+      const newIndex = prev.findIndex((i) => i.id === over.id)
+      const reordered = arrayMove(prev, oldIndex, newIndex)
+
+      bulkUpdateOrden(schema.collection, reordered.map((i) => i.id)).catch(() =>
+        Swal.fire({ title: 'Error al guardar el orden', icon: 'error' })
+      )
+
+      return reordered
+    })
+  }
 
   async function handleDelete(id, label) {
     const result = await Swal.fire({
@@ -197,56 +264,114 @@ export default function AdminList({ schema }) {
         </div>
       )}
 
-      {!loading && visibleItems.length > 0 && (
-        <div className="flex flex-col gap-3">
-          {visibleItems.map((item) => {
-            const label = item[primaryField] || item.id
-            return (
-              <div
-                key={item.id}
-                className="bg-white rounded-2xl shadow-xl p-4 flex items-center justify-between gap-4"
-              >
-                <div className="flex items-center gap-4 min-w-0">
-                  {item.img && (
-                    <img
-                      src={item.img}
-                      alt=""
-                      className="w-14 h-14 object-cover rounded-xl border border-gray-100 shrink-0"
-                      onError={hideImgOnError}
-                    />
-                  )}
-                  <div className="min-w-0">
-                    <p className="font-semibold text-gray-900 truncate">
-                      {label || '(sin título)'}
-                    </p>
-                    <p className="text-xs text-gray-400 truncate">
-                      {schema.listColumns
-                        .slice(1)
-                        .map((col) => item[col])
-                        .filter(Boolean)
-                        .join(' · ')}
-                    </p>
+      {!loading && visibleItems.length > 0 &&
+        (isSortable ? (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={visibleItems.map((i) => i.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="flex flex-col gap-3">
+                {visibleItems.map((item) => {
+                  const label = item[primaryField] || item.id
+                  return (
+                    <SortableItem key={item.id} id={item.id}>
+                      <div className="flex items-center gap-4 min-w-0">
+                        {item.img && (
+                          <img
+                            src={item.img}
+                            alt=""
+                            className="w-14 h-14 object-cover rounded-xl border border-gray-100 shrink-0"
+                            onError={hideImgOnError}
+                          />
+                        )}
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">
+                            {label || '(sin título)'}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {schema.listColumns
+                              .slice(1)
+                              .map((col) => item[col])
+                              .filter(Boolean)
+                              .join(' · ')}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => navigate(`${schema.basePath}/${item.id}/editar`)}
+                          className="border border-gray-300 text-gray-700 rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id, label)}
+                          className="bg-red-600 text-white rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-red-700 transition-colors"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </SortableItem>
+                  )
+                })}
+              </div>
+            </SortableContext>
+          </DndContext>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {visibleItems.map((item) => {
+              const label = item[primaryField] || item.id
+              return (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-2xl shadow-xl p-4 flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    {item.img && (
+                      <img
+                        src={item.img}
+                        alt=""
+                        className="w-14 h-14 object-cover rounded-xl border border-gray-100 shrink-0"
+                        onError={hideImgOnError}
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">
+                        {label || '(sin título)'}
+                      </p>
+                      <p className="text-xs text-gray-400 truncate">
+                        {schema.listColumns
+                          .slice(1)
+                          .map((col) => item[col])
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => navigate(`${schema.basePath}/${item.id}/editar`)}
+                      className="border border-gray-300 text-gray-700 rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id, label)}
+                      className="bg-red-600 text-white rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </div>
-                <div className="flex gap-2 shrink-0">
-                  <button
-                    onClick={() => navigate(`${schema.basePath}/${item.id}/editar`)}
-                    className="border border-gray-300 text-gray-700 rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-gray-50 transition-colors"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id, label)}
-                    className="bg-red-600 text-white rounded-xl px-4 py-1.5 text-sm font-semibold hover:bg-red-700 transition-colors"
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
+              )
+            })}
+          </div>
+        ))}
     </div>
   )
 }

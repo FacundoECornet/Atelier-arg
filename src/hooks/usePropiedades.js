@@ -5,7 +5,7 @@ import { db } from '../Firebase'
 let cachedData = null
 
 async function fetchAll() {
-  const q = query(collection(db, 'propiedades'), orderBy('fechaIngreso', 'desc'))
+  const q = query(collection(db, 'propiedades'), orderBy('orden', 'desc'))
   const snap = await getDocs(q)
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }))
 }

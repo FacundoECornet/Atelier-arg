@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
   limit,
+  writeBatch,
 } from 'firebase/firestore'
 import { db } from '../Firebase'
 
@@ -48,4 +49,12 @@ export async function update(collectionName, id, data) {
 
 export async function remove(collectionName, id) {
   await deleteDoc(doc(db, collectionName, id))
+}
+
+export async function bulkUpdateOrden(collectionName, orderedIds) {
+  const batch = writeBatch(db)
+  orderedIds.forEach((id, index) => {
+    batch.update(doc(db, collectionName, id), { orden: index + 1 })
+  })
+  await batch.commit()
 }

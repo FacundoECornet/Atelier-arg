@@ -152,8 +152,8 @@ const AllProperties = () => {
           aria-label="Ordenar por fecha de ingreso"
           className="px-4 py-2 rounded-full border border-gray-300 bg-white text-black transition-all cursor-pointer"
         >
-          <option value="newest">Más recientes</option>
-          <option value="oldest">Más antiguos</option>
+          <option value="newest">Orden admin</option>
+          <option value="oldest">Invertir orden</option>
         </select>
       </nav>
 
